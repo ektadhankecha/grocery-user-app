@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+
+class MyIcon {
+  MyIcon._();
+
+  static const IconData email = Icons.email_outlined;
+  static const IconData lock = Icons.lock_outlined;
+  static const IconData visibility = Icons.visibility_outlined;
+  static const IconData visibilityOff = Icons.visibility_off_outlined;
+  static const IconData arrowBack = Icons.arrow_back_ios_new;
+  static const IconData call = Icons.call_outlined;
+  static const IconData arrowDropDown = Icons.arrow_drop_down;
+  static const IconData home = Icons.home_outlined;
+  static const IconData profileCircle = Iconsax.profile_circle_copy;
+  static const IconData favoriteBorder = Icons.favorite_border_outlined;
+  static const IconData shoppingBag = Iconsax.shopping_bag_copy;
+  static const IconData box = Iconsax.box_copy;
+  static const IconData favoriteBorderSimple = Icons.favorite_border;
+  static const IconData location = Iconsax.location_copy;
+  static const IconData creditCard = Icons.credit_card_outlined;
+  static const IconData wallet = Icons.account_balance_wallet_outlined;
+  static const IconData notifications = Icons.notifications_outlined;
+  static const IconData logout = Icons.logout_outlined;
+  static const IconData edit = Icons.edit_outlined;
+  static const IconData phone = Icons.phone_outlined;
+  static const IconData pin = Icons.pin_outlined;
+  static const IconData map = Icons.map_outlined;
+  static const IconData language = Icons.language_outlined;
+  static const IconData arrowDropDownOutlined = Icons.arrow_drop_down_outlined;
+  static const IconData trash = Iconsax.trash_copy;
+  static const IconData add = Icons.add;
+  static const IconData remove = Icons.remove;
+  static const IconData heartRemove = Iconsax.heart_remove_copy;
+  static const IconData arrowDropDownCircle = Icons.arrow_drop_down_circle_outlined;
+  static const IconData arrowUpDownCircle = Icons.arrow_circle_up;
+  static const IconData favorite = Icons.favorite;
+  static const IconData star = Icons.star;
+  static const IconData starHalf = Icons.star_half;
+  static const IconData starBorder = Icons.star_border_outlined;
+  static const IconData camera = Icons.camera_alt;
+  static const IconData arrowForward = Icons.arrow_forward_ios;
+  static const IconData search = Icons.search;
+  static const IconData searchOff = Icons.search_off;
+  static const IconData settings = Icons.settings;
+  static const IconData menu = Icons.menu;
+  static const IconData checkCircle = Icons.check_circle_outline;
+  static const IconData cardbox = Icons.credit_card;
+  static const IconData calender = Icons.calendar_today_outlined;
+  static const IconData check = Icons.check;
+  static const IconData checkround = Icons.check_circle_outlined;
+ static const IconData delivery_truck = Icons.local_shipping_outlined;
+  static const IconData box2 = Icons.archive_outlined;
+  static const IconData shoppingCart = Icons.shopping_cart_outlined;
+  static const IconData error =  Icons.error;
+  static const IconData noAddress =  Iconsax.location_cross_copy;
+  static const IconData noCard =  Iconsax.card_remove_copy;
+  static const IconData noTransaction =  Icons.receipt_long_outlined;
+
+}

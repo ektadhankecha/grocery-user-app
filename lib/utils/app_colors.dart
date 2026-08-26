@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+
+class MyColor {
+  MyColor._();
+  static const Color textGraey = Color(0xff868889);
+  static const Color animationGreen = Color(0xff6CC51D);
+  static const Color lightGraey = Color(0xffC4C4C4);
+  static const Color searchGraey = Color(0xffedeef1);
+  static const Color vegiGreen = Color(0xffE6F2EA);
+  static const Color fruitRed = Color(0xffFFE9E5);
+  static const Color beverageYellow = Color(0xffFFF6E3);
+  static const Color groPurple = Color(0xffF3EFFA);
+  static const Color oilBlue = Color(0xffDCF4F5);
+  static const Color housePink = Color(0xffFFE8F2);
+  static const Color babyBlue = Color(0xffD2EFFF);
+  static const Color peach = Color(0xffFFCEC1);
+  static const Color avocada = Color(0xffFCFFD9);
+  static const Color pineapple = Color(0xffFFE6C2);
+  static const Color grapes = Color(0xffFEE1ED);
+  static const Color pomegrante = Color(0xffFFE3E2);
+  static const Color broccoli = Color(0xffD2FFD0);
+  static const Color dividerLine = Color(0xffEBEBEB);
+  static const Color faviourtred = Color(0xffFE585A);
+  static const Color bg1 = Color(0xffFFFFFF);
+  static const Color bg3 = Color(0xffF4F5F9);
+  static const Color newclr = Color(0xffFDEFD5);
+  static const Color offclr = Color(0xffFEE4E4);
+  static const Color newtext = Color(0xffE8AD41);
+  static const Color offtext = Color(0xffF56262);
+  static const Color catebg = Color(0xffFFFBFB);
+  static const Color textgreen = Color(0xff28B446);
+  static const Color staryellow = Color(0xffFFC107);
+  static const Color borderGray = Color(0xffEBEBEB);
+  static const Color gradientGreen = Color(0xffAEDC81);
+  static const Color dltRed = Color(0xffEF574B);
+  static const Color blue = Color(0xff407EC7);
+  static const Color aniGray = Color(0xffDCDCDC);
+  static const Color lightGray = Color(0xff969696);
+  static const Color locationgreen = Color(0xffEBFFD7);
+  static const Color bggray = Color(0xffF5F5F5);
+  static const Color dividergrey = Color(0xffE8E9E9);
+}

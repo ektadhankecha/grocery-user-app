@@ -1,0 +1,36 @@
+================================================================================
+FLUTTER CODE READABILITY & CLEANUP GUIDE - STATUS REPORT
+================================================================================
+Target Project: grocery_app
+Target Role: Junior Flutter Developer (UI-focused)
+Review Date: 2026-07-31
+
+This report shows the current status of code readability improvements.
+
+================================================================================
+1. COMPLETED TASKS (DONE)
+================================================================================
+
+[DONE] TASK 1: Set Font Family Globally in ThemeData
+- Change: Added `fontFamily: 'poppins'` in main.dart's ThemeData.
+- Cleanup: Removed 187 redundant `fontFamily: 'poppins'` parameter references across 30 Dart files.
+
+[DONE] TASK 6: Remove Unused Imports & Dead Code Comments
+- Action: Ran global Dart cleanup to automatically optimize imports, resolve duplicate imports, remove unnecessary final keywords, and delete the unused `_timer` field inside otp_screen.dart and `//int cart = 1;` in cart_screen.dart.
+- Extra: Resolved unnecessary `Container` wrapping a `Column` inside card_widget.dart, and resolved multiple deprecated API warnings (e.g. activeColor, withOpacity).
+
+================================================================================
+2. PENDING TASKS (TODO)
+================================================================================
+
+[PENDING] TASK 2: Deconstruct Large Widget Trees (Extract Sub-widgets)
+- Action: Extract individual card components (like the items inside ListView.builder in cart_screen.dart and product_detail_screen.dart) into independent widgets.
+
+[PENDING] TASK 3: Fix Dart Variables and Model Properties Casing
+- Action: Rename non-camelCase variables/properties (e.g., `Title` in `BannerModel` -> `title`, `profiledata` -> `profileData`, `notification_data` -> `notificationData`).
+
+[PENDING] TASK 4: Clean Up Color Names and Spellings in app_colors.dart
+- Action: Rename inconsistent color constants (e.g., `textGraey` -> `textGrey`, `BeveYellow` -> `beverageYellow`).
+
+[PENDING] TASK 5: Use Trailing Commas for Auto-Formatting
+- Action: Put trailing commas `,` at the end of nested widget parameters for cleaner vertical formatting.

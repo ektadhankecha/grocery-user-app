@@ -1,0 +1,108 @@
+================================================================================
+FLUTTER UI CODE REVIEW & RELIABILITY ANALYSIS (UPDATED STATUS)
+================================================================================
+Target Project: grocery_app
+Target Role: Junior Flutter Developer (UI-focused)
+Review Date: 2026-07-31
+
+CONGRATULATIONS!
+You have successfully fixed the vast majority of critical logical typos, navigation 
+stack leaks, spelling mistakes, and visual mismatches yourself! Your code is now 
+significantly cleaner and much closer to a production-ready UI layout.
+
+Here is the updated list of the remaining minor issues you should address to 
+finish up your task.
+
+================================================================================
+REMAINING ISSUES TO FIX
+================================================================================
+
+--------------------------------------------------------------------------------
+1. VERIFY NUMBER LABELS & READONLY FIELD (lib/auth/verify_number.dart)
+--------------------------------------------------------------------------------
+* Remaining Typos:
+  - The subtitle on line 62 still says: 
+    "Enter the verification code sent to your email."
+    (Should be changed to "phone number" or "mobile number").
+  - The telephone text input on line 79 has `readOnly: true`, which means the user 
+    cannot edit the prefilled phone number if there is a mistake. Consider removing 
+    `readOnly: true` or making it editable.
+
+--------------------------------------------------------------------------------
+2. DUPLICATED "ITEMS: " LABELS IN ORDER SCREEN (lib/screen/order_screen.dart)
+--------------------------------------------------------------------------------
+* Remaining Typo:
+  - In lines 161, 300, and 429, the RichText label next to the total price says:
+    `text: "Items: "`
+  - Result:
+    This prints "Items: 10  Items: $16.90". The second label should be changed 
+    to `"Total: "` or `"Price: "`.
+
+--------------------------------------------------------------------------------
+3. MIXED PRODUCTS IN VEGETABLE SCREEN (lib/widget/home/featured_product_title.dart)
+--------------------------------------------------------------------------------
+* Remaining Design Issue:
+  - Clicking the arrow next to "Featured products" on line 42 still passes the 
+    unfiltered `products` list (which includes fruits like peaches and pineapples) 
+    to the `VegetableScreen`.
+  - Fix: Filter the array to only include vegetable items before passing it to 
+    the screen.
+
+--------------------------------------------------------------------------------
+4. STATIC "ADD TO CART" ON CARD (lib/widget/home/product_card.dart)
+--------------------------------------------------------------------------------
+* Remaining Design Issue:
+  - The "Add to cart" row on line 166 has no `GestureDetector` or `InkWell` 
+    wrapped around it. Clicking it opens the details page instead of directly 
+    adding the item to the cart.
+  - Fix: Wrap the row in an `InkWell` or `GestureDetector` to call your add-to-cart 
+    logic.
+
+--------------------------------------------------------------------------------
+5. HARDCODED NAMES ON PROFILE & SIDE DRAWER (profile_screen.dart & custom_drawer.dart)
+--------------------------------------------------------------------------------
+* Remaining Visual Sync Issue:
+  - The Profile screen name is hardcoded as "Olivia Austin" and custom drawer is 
+    hardcoded as "Olivia Austin". However, editing details in the "About Me" screen 
+    defaults to "Russell Austin". 
+  - Fix: Declare global string variables in `lib/data/profile_data.dart` (such as 
+    `String currentUserName = "Russell Austin";`) and use them in all three screens 
+    to keep them in sync.
+
+--------------------------------------------------------------------------------
+6. PASSWORD RECOVERY TO PHONE VERIFICATION DISCONNECT (forget_password.dart)
+--------------------------------------------------------------------------------
+* Logical UX Bug:
+  - Tapping "Send Link" after entering an email on the `ForgetPassword` screen 
+    navigates to `VerifyNumber`, which displays a prefilled telephone number input 
+    rather than verifying the email.
+  - Fix: Redirect to a verification page matching the recovery method (email-focused).
+
+--------------------------------------------------------------------------------
+7. POTENTIAL LAYOUT OVERFLOW IN SEARCH SCREEN (lib/screen/search_screen.dart)
+--------------------------------------------------------------------------------
+* Layout Safety Bug:
+  - The search screen body uses a standard `Column` to render search history and 
+    discover items. If the search history wrap list grows too large, the screen 
+    will throw a layout height overflow exception.
+  - Fix: Wrap the `Column` inside a `SingleChildScrollView` to make it scrollable.
+
+--------------------------------------------------------------------------------
+8. STATIC CAROUSEL DOTS COUNT (lib/widget/home/banner_widget.dart)
+--------------------------------------------------------------------------------
+* Correctness Bug:
+  - The banner dots generation has a hardcoded length of `3` (`List.generate(3, ...)`).
+    If the size of the `banners` list changes, it will show the wrong number of dots.
+  - Fix: Replace `3` with `banners.length`.
+
+================================================================================
+PART 2: DEPRECATED API WARNINGS & LINTS (REMAINING)
+================================================================================
+
+1. Deprecated Switch parameters (`activeColor`):
+   - Replace with `activeThumbColor` in standard Switch components.
+2. Deprecated Opacity (`withOpacity`):
+   - Replace with `color.withValues(alpha: 0.5)` in `bottom_navigation_widget.dart`.
+3. Production Prints:
+   - Clean up `print("pressed")` in `about_me_screen.dart`.
+================================================================================
