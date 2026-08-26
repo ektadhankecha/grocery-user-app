@@ -35,7 +35,7 @@ class AuthPage extends StatelessWidget {
                 Text(
                   "Welcome",
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                     color: MyColor.bg1,
                   ),
