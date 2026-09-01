@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/data/dummy_data.dart';
@@ -33,12 +34,13 @@ class _FeaturedProductWidgetState extends State<FeaturedProductWidget> {
               IconButton(
                 splashRadius: 50,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => VegetableScreen(product: products),
-                    ),
-                  );
+                  context.push("/product",extra: products);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => ProductScreen(product: products),
+                  //   ),
+                  // );
                 },
                 constraints: const BoxConstraints(),
                 padding: EdgeInsets.zero,
@@ -70,14 +72,15 @@ class _FeaturedProductWidgetState extends State<FeaturedProductWidget> {
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          ProductDetailScreen(product: products[index]),
-                    ),
-                  );
+                onTap: ()  {
+                  context.push("/productDetail",extra: products[index]);
+                  // await Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) =>
+                  //         ProductDetailScreen(product: products[index]),
+                  //   ),
+                  // );
                 },
                 child: ProductCard(product: products[index]),
               );

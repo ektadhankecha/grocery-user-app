@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/app_colors.dart';
@@ -14,10 +15,11 @@ class SearchBarWidget extends StatelessWidget {
       child: TextField(
         readOnly: true,
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SearchScreen()),
-          );
+          context.push("/search");
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => SearchScreen()),
+          // );
         },
         decoration: InputDecoration(
           fillColor: MyColor.searchGraey,

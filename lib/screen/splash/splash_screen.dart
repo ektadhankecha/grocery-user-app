@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/auth/auth_page.dart';
 import 'package:grocery_app/screen/main_page/main_screen.dart';
 import 'package:grocery_app/screen/on_boarding/onboarding_screen.dart';
@@ -25,21 +26,25 @@ class _SplashScreenState extends State<SplashScreen> {
       bool isLogin = pref.getBool("LoginSuccess") ?? false;
       if (isComplete) {
         if (isLogin) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MainScreen()),
-          );
+          context.go("/main");
+
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => MainScreen()),
+          // );
         } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AuthPage()),
-          );
+          context.go("/auth");
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => AuthPage()),
+          // );
         }
       } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => OnboardingScreen()),
-        );
+        context.go("/onBoarding");
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => OnboardingScreen()),
+        // );
       }
     });
   }

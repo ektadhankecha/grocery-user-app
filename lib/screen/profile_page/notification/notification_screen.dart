@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/home_page/home_screen.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -40,7 +41,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
         backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),
@@ -110,10 +112,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                );
+                context.push("/main");
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                // );
               },
               child: Container(
                 height: 60.h,

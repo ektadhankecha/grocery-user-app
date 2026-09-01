@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/profile_page/transaction/transaction_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -24,7 +25,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),

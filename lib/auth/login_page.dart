@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/main_page/main_screen.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,7 +49,8 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.pop();
+                    //Navigator.pop(context);
                   },
                   icon: Icon(MyIcon.arrowBack, size: 25.sp, color: MyColor.bg1),
                 ),
@@ -232,12 +234,13 @@ class _LoginPageState extends State<LoginPage> {
                             //forget password
                             TextButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ForgetPassword(),
-                                  ),
-                                );
+                                context.push("/forgetPassword");
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => ForgetPassword(),
+                                //   ),
+                                // );
                               },
                               child: Text(
                                 "Forgot password",
@@ -259,13 +262,16 @@ class _LoginPageState extends State<LoginPage> {
                           if (_formKey.currentState!.validate()) {
                             SharedPreferences pref =await SharedPreferences.getInstance();
                             await pref.setBool("LoginSuccess", true);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MainScreen(showLoginSuccess: true,),
-                              ),
-                            );
+                            if(context.mounted){
+                              context.go("/main",extra: "login",);
+                            }
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         MainScreen(showLoginSuccess: true,),
+                            //   ),
+                            // );
                           }
                         },
                         child: Container(
@@ -316,12 +322,13 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SignupPage(),
-                                ),
-                              );
+                              context.push("/signup");
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => SignupPage(),
+                              //   ),
+                              // );
                             },
                             child: Text(
                               "Sign up",

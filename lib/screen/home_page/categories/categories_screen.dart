@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/model/category_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +19,8 @@ class CategoriesScreen extends StatelessWidget {
 
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),

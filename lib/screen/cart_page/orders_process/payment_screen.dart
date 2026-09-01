@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/model/order_item_model.dart';
 import 'package:grocery_app/model/order_model.dart';
 import 'package:grocery_app/model/transactions_model.dart';
-import 'package:grocery_app/screen/home_page/featured_product/card/card_provider.dart';
+import 'package:grocery_app/screen/profile_page/card/card_provider.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/order_provider.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
 import 'package:grocery_app/screen/profile_page/transaction/transaction_provider.dart';
@@ -36,7 +37,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack),
         ),
@@ -122,10 +124,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           "You haven't added a payment card yet. Add a card for faster checkout.",
                       buttonText: "Add Card",
                       onButtonPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AddCard()),
-                        );
+                        context.push("/addCard");
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => AddCard()),
+                        // );
                       },
                     ),
                   )
@@ -206,12 +209,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       );
                       await transactionProvider.addTransaction(transaction);
                       productProvider.clearCart();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OrderSucessScreen(),
-                        ),
-                      );
+                      context.push("/orderSuccess");
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => OrderSucessScreen(),
+                      //   ),
+                      // );
                     }
                   : null,
               child: Container(

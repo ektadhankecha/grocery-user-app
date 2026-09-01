@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,12 +29,13 @@ class CategoryWidget extends StatelessWidget {
               IconButton(
                 splashRadius: 50,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => CategoriesScreen(categories: categories),
-                    ),
-                  );
+                  context.push("/category",extra:categories);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => CategoriesScreen(categories: categories),
+                  //   ),
+                  // );
                 },
                 constraints: const BoxConstraints(),
                 padding: EdgeInsets.zero,

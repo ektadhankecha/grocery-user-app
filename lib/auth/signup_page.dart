@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -55,7 +56,8 @@ class _SignupPageState extends State<SignupPage> {
                 //back
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.pop();
+                  //  Navigator.pop(context);
                   },
                   icon: Icon(MyIcon.arrowBack, size: 25.sp, color: MyColor.bg1),
                 ),
@@ -295,14 +297,17 @@ class _SignupPageState extends State<SignupPage> {
                               email: emailController.text,
                               contact: mobileController.text,
                             );
+                            if(context.mounted){
+                              context.go("/main",extra: "signup");
+                            }
 
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MainScreen(showSignupSuccess: true),
-                              ),
-                            );
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         MainScreen(showSignupSuccess: true),
+                            //   ),
+                            // );
                           }
                         },
                         child: Container(
@@ -353,12 +358,13 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginPage(),
-                                ),
-                              );
+                              context.push("/login");
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => LoginPage(),
+                              //   ),
+                              // );
                             },
                             child: Text(
                               "Log in",

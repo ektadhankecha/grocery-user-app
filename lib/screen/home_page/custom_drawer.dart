@@ -94,37 +94,37 @@ class CustomDrawer extends StatelessWidget {
                       onTap: () {
                         switch (drawer[index].id) {
                           case "home":
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
-                              ),
-                              (route) => false,
-                            );
+                            // Navigator.pushAndRemoveUntil(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => HomeScreen(),
+                            //   ),
+                            //   (route) => false,
+                            // );
                             break;
                           case "profile":
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfilePage(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ProfilePage(),
+                            //   ),
+                            // );
                             break;
                           case "like":
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FavouritePage(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => FavouritePage(),
+                            //   ),
+                            // );
                             break;
                           case "cart":
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CartPage(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => CartPage(),
+                            //   ),
+                            // );
                             break;
                         }
                       },

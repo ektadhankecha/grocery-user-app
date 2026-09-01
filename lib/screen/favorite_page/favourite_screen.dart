@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
@@ -35,7 +36,8 @@ class FavouritePage extends StatelessWidget {
               if (fromBottomNav) {
                 context.read<BottomNavigationProvider>().changeIndex(0);
               } else {
-                Navigator.pop(context);
+                context.pop();
+                //Navigator.pop(context);
               }
             },
             icon: Icon(MyIcon.arrowBack, size: 22.sp),

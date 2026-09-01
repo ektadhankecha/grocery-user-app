@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/profile_page/address/address_provider.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/payment_screen.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -28,7 +29,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack),
         ),
@@ -120,12 +121,13 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                           "You haven't added any delivery address yet. Add an address to make checkout faster.",
                       buttonText: "Add Address",
                       onButtonPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddressScreen(),
-                          ),
-                        );
+                        context.push("/address");
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => AddressScreen(),
+                        //   ),
+                        // );
                       },
                     ),
                   )
@@ -165,12 +167,13 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
             GestureDetector(
               onTap: canSelect
                   ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PaymentScreen(),
-                        ),
-                      );
+                   context.push("/payment");
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => PaymentScreen(),
+                      //   ),
+                      // );
                     }
                   : null,
               child: Container(

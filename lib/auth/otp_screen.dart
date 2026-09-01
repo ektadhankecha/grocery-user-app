@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'login_page.dart';
@@ -59,7 +60,8 @@ class _OtpScreenState extends State<OtpScreen> {
         backgroundColor: MyColor.bg3,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 25.sp),
         ),
@@ -113,11 +115,12 @@ class _OtpScreenState extends State<OtpScreen> {
             GestureDetector(
               onTap: () {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                    (route) => false,
-                  );
+                 context.go("/login");
+                  // Navigator.pushAndRemoveUntil(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => LoginPage()),
+                  //   (route) => false,
+                  // );
                 }
               },
               child: Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:grocery_app/data/track_order_data.dart';
@@ -14,21 +15,23 @@ class TrackOrderScreen extends StatelessWidget {
       canPop: false,
       onPopInvokedWithResult: ((didPop, result) {
         if (didPop) return;
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => const MainScreen()),
-          (route) => false,
-        );
+        context.go("/main");
+        // Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(builder: (_) => const MainScreen()),
+        //   (route) => false,
+        // );
       }),
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: ((context) => MainScreen())),
-                (route) => false,
-              );
+              context.go("/main");
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   MaterialPageRoute(builder: ((context) => MainScreen())),
+              //   (route) => false,
+              // );
             },
             icon: Icon(MyIcon.arrowBack),
           ),

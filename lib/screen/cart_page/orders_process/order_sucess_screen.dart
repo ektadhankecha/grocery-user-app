@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/teack_order/track_order_screen.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/screen/main_page/main_screen.dart';
 
-class OrderSucessScreen extends StatelessWidget {
-  const OrderSucessScreen({super.key});
+class OrderSuccessScreen extends StatelessWidget {
+  const OrderSuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +15,12 @@ class OrderSucessScreen extends StatelessWidget {
       canPop: false,
       onPopInvokedWithResult: ((didPop, result) {
         if (didPop) return;
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => const MainScreen()),
-          (route) => false,
-        );
+        context.go("/main");
+        // Navigator.pushAndRemoveUntil(
+        //   context,
+        //   MaterialPageRoute(builder: (_) => const MainScreen()),
+        //   (route) => false,
+        // );
       }),
       child: Scaffold(
         body: Container(
@@ -62,10 +64,11 @@ class OrderSucessScreen extends StatelessWidget {
               Spacer(),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TrackOrderScreen()),
-                  );
+                  context.push("/trackOrder");
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => TrackOrderScreen()),
+                  // );
                 },
                 child: Container(
                   height: 60.h,

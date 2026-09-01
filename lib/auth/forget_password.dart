@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -19,7 +20,8 @@ class ForgetPassword extends StatelessWidget {
         backgroundColor: MyColor.bg3,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 25.sp),
         ),
@@ -85,12 +87,13 @@ class ForgetPassword extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VerifyNumber(),
-                          ),
-                        );
+                        context.push("/verify");
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => VerifyNumber(),
+                        //   ),
+                        // );
                       }
                     },
                     child: Container(

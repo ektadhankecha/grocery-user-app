@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/shipping_methods_1_screen.dart';
@@ -327,12 +328,13 @@ class _CartPageState extends State<CartPage> {
                         SizedBox(height: 17.h),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ShippingMethods1Screen(),
-                              ),
-                            );
+                            context.push("/shippingMethod");
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ShippingMethods1Screen(),
+                            //   ),
+                            // );
                           },
                           child: SizedBox(
                             width: double.infinity,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/shipping_address_screen.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -20,7 +21,8 @@ class _ShippingMethods1ScreenState extends State<ShippingMethods1Screen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack),
         ),
@@ -168,12 +170,13 @@ class _ShippingMethods1ScreenState extends State<ShippingMethods1Screen> {
               onTap: selectedShippingIndex == null
                   ? null
                   : () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShippingAddressScreen(),
-                        ),
-                      );
+                context.push("/shippingAddress");
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ShippingAddressScreen(),
+                      //   ),
+                      // );
                     },
               child: Container(
                 height: 60.h,

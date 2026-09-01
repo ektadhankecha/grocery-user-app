@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/model/product_model.dart';
@@ -6,15 +7,15 @@ import 'package:grocery_app/utils/app_colors.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_card.dart';
 import 'package:grocery_app/screen/home_page/featured_product/product_detail_screen.dart';
 
-class VegetableScreen extends StatefulWidget {
+class ProductScreen extends StatefulWidget {
   final List<ProductModel> product;
-  const VegetableScreen({super.key, required this.product});
+  const ProductScreen({super.key, required this.product});
 
   @override
-  State<VegetableScreen> createState() => _VegetableScreenState();
+  State<ProductScreen> createState() => _ProductScreenState();
 }
 
-class _VegetableScreenState extends State<VegetableScreen> {
+class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +25,8 @@ class _VegetableScreenState extends State<VegetableScreen> {
 
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),

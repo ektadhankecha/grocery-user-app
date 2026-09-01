@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -145,7 +146,8 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            context.pop();
+                            //Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: MyColor.bg1,
@@ -176,7 +178,8 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                                     setState(() {
                                       controller.text = tempController.text;
                                     });
-                                    Navigator.pop(context);
+                                    context.pop();
+                                    //Navigator.pop(context);
                                   }
                                 },
                           style: ElevatedButton.styleFrom(
@@ -221,7 +224,8 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
         backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),
@@ -396,7 +400,8 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                       email: emailController.text,
                       contact: phoneController.text,
                     );
-                    Navigator.pop(context);
+                    context.pop();
+                    //Navigator.pop(context);
                   }
                 },
                 child: Container(

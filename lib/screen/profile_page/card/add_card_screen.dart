@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grocery_app/screen/home_page/featured_product/card/card_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grocery_app/screen/profile_page/card/card_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,7 +63,8 @@ class _AddCardState extends State<AddCard> {
         backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),
@@ -296,7 +298,8 @@ class _AddCardState extends State<AddCard> {
                           cvv: cvvController.text,
                         );
                         context.read<CardProvider>().addCard(newCard);
-                        Navigator.pop(context);
+                        context.pop();
+                        //Navigator.pop(context);
                       } else {
                         showTopSnackBar(
                           context,

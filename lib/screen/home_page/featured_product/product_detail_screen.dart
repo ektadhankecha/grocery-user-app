@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -64,7 +65,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   left: 16.w,
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
+                      //Navigator.pop(context);
                     },
                     icon: Icon(MyIcon.arrowBack, size: 22.sp),
                   ),

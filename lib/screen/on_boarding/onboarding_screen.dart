@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/auth/auth_page.dart';
 import 'package:grocery_app/screen/on_boarding/onboarding_provider.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -48,10 +49,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
                     await pref.setBool("onBoardingComplete", true);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AuthPage()),
-                    );
+                    context.go("/auth");
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => const AuthPage()),
+                    // );
                   },
                   child: Text(
                     "Skip",
@@ -98,12 +100,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       await pref.setBool("onBoardingComplete", true);
 
                       // Last onboarding page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AuthPage(),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const AuthPage(),
+                      //   ),
+                      // );
+                      context.go("/auth");
                     } else {
                       // Go to next onboarding page
                       pageController.nextPage(

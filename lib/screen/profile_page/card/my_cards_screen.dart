@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_app/screen/home_page/featured_product/card/card_provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grocery_app/screen/profile_page/card/card_provider.dart';
 import 'package:grocery_app/screen/profile_page/card/add_card_screen.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:grocery_app/utils/app_icons.dart';
@@ -28,7 +29,8 @@ class _MyCardsScreenState extends State<MyCardsScreen> {
         backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),
@@ -46,10 +48,11 @@ class _MyCardsScreenState extends State<MyCardsScreen> {
                   "You haven't added a payment card yet. Add a card for faster checkout.",
               buttonText: "Add Card",
               onButtonPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddCard()),
-                );
+                context.push("/addCard");
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => AddCard()),
+                // );
               },
             )
           : Padding(
@@ -81,10 +84,11 @@ class _MyCardsScreenState extends State<MyCardsScreen> {
 
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddCard()),
-                      );
+                      context.push("/addCard");
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => AddCard()),
+                      // );
                     },
 
                     child: Container(

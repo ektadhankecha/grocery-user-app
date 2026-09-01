@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
 import 'package:grocery_app/screen/profile_page/card/my_cards_screen.dart';
 import 'package:grocery_app/screen/profile_page/notification/notification_screen.dart';
@@ -57,7 +58,8 @@ class ProfilePage extends StatelessWidget {
                   SizedBox(width: 20),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      context.pop();
+                      //Navigator.pop(context);
                     },
                     child: const Icon(Icons.close, color: Colors.black),
                   ),
@@ -283,67 +285,76 @@ class ProfilePage extends StatelessWidget {
                           SharedPreferences pref =
                               await SharedPreferences.getInstance();
                           await pref.setBool("LoginSuccess", false);
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => AuthPage()),
-                            (route) => false,
-                          );
+                         context.go('/auth');
+                          // context.push("/auth");
+                          // Navigator.pushAndRemoveUntil(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => AuthPage()),
+                          //   (route) => false,
+                          // );
                           break;
                         case "fav":
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FavouritePage(),
-                            ),
-                          );
+                          context.push("/favourite");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => FavouritePage(),
+                          //   ),
+                          // );
                           break;
                         case "about":
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AboutMeScreen(),
-                            ),
-                          );
+                          context.push("/aboutMe");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => AboutMeScreen(),
+                          //   ),
+                          // );
                           break;
                         case "add":
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyAddressScreen(),
-                            ),
-                          );
+                          context.push("/myAddress");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => MyAddressScreen(),
+                          //   ),
+                          // );
                           break;
                         case "order":
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OrderScreen(),
-                            ),
-                          );
+                          context.push("/order");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => OrderScreen(),
+                          //   ),
+                          // );
                           break;
                         case "cards":
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MyCardsScreen(),
-                            ),
-                          );
+                          context.push("/myCard");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => MyCardsScreen(),
+                          //   ),
+                          // );
                           break;
                         case "transaction":
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TransactionsScreen(),
-                            ),
-                          );
+                          context.push("/transaction");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => TransactionsScreen(),
+                          //   ),
+                          // );
                           break;
                         case "notification":
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NotificationScreen(),
-                            ),
-                          );
+                          context.push("/notification");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => NotificationScreen(),
+                          //   ),
+                          // );
                           break;
                       }
                     },

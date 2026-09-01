@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/profile_page/address/address_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/auth/snack_bar.dart';
@@ -82,7 +83,8 @@ class _AddressScreenState extends State<AddressScreen> {
         backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),
@@ -441,7 +443,8 @@ class _AddressScreenState extends State<AddressScreen> {
                             await context.read<AddressProvider>().addAddresses(
                               newAddress,
                             );
-                            Navigator.pop(context);
+                            context.pop();
+                            //Navigator.pop(context);
                           } else {
                             showTopSnackBar(
                               context,

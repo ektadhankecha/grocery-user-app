@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -118,10 +119,11 @@ class AuthPage extends StatelessWidget {
                     //sign up button
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignupPage()),
-                        );
+                        context.push("/signup");
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => SignupPage()),
+                        // );
                       },
                       child: Container(
                         height: 60.h,
@@ -185,12 +187,13 @@ class AuthPage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginPage(),
-                              ),
-                            );
+                            context.push("/login");
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => LoginPage(),
+                            //   ),
+                            // );
                           },
                           child: Text(
                             "Login",

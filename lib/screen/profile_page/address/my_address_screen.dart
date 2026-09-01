@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/profile_page/address/address_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/screen/profile_page/address/address_screen.dart';
@@ -26,7 +27,8 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
         backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 22.sp),
         ),
@@ -44,10 +46,11 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
                   "You haven't added any delivery address yet. Add an address to make checkout faster.",
               buttonText: "Add Address",
               onButtonPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddressScreen()),
-                );
+                context.push("/address");
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => AddressScreen()),
+                // );
               },
             )
           : Padding(
@@ -78,12 +81,13 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
                   SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddressScreen(),
-                        ),
-                      );
+                      context.push("/address");
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => AddressScreen(),
+                      //   ),
+                      // );
                     },
 
                     child: Container(

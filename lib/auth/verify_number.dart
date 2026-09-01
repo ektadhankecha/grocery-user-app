@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -21,7 +22,8 @@ class _VerifyNumberState extends State<VerifyNumber> {
         backgroundColor: MyColor.bg3,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            context.pop();
+            //Navigator.pop(context);
           },
           icon: Icon(MyIcon.arrowBack, size: 25.sp),
         ),
@@ -106,10 +108,11 @@ class _VerifyNumberState extends State<VerifyNumber> {
             SizedBox(height: 15.h),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OtpScreen()),
-                );
+                context.push("/otp");
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => OtpScreen()),
+                // );
               },
               child: Container(
                 height: 60.h,
