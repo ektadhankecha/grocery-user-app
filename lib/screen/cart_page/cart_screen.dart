@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
-import 'package:grocery_app/screen/cart_page/orders_process/shipping_methods_1_screen.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,9 +16,151 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   int openedIndex = -1;
+
+  Widget _buildPaymentSummary(
+    BuildContext context,
+    ProductProvider productProvider,
+    bool isWide,
+  ) {
+    return Container(
+      padding: EdgeInsets.all(isWide ? 24 : 20.r),
+      decoration: BoxDecoration(
+        color: MyColor.bg1,
+        borderRadius: isWide ? BorderRadius.circular(12) : null,
+        boxShadow: isWide
+            ? [
+                BoxShadow(
+                  color: Colors.black.withAlpha(10),
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : null,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isWide) ...[
+            const Text(
+              "Order Summary",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Subtotal",
+                style: TextStyle(
+                  color: MyColor.textGraey,
+                  fontSize: isWide ? 13 : 10,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                "\$${productProvider.subTotal.toStringAsFixed(2)}",
+                style: TextStyle(
+                  color: MyColor.textGraey,
+                  fontSize: isWide ? 13 : 10,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: isWide ? 12 : 8.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Shipping charges",
+                style: TextStyle(
+                  color: MyColor.textGraey,
+                  fontSize: isWide ? 13 : 10,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                "\$${productProvider.shipping.toStringAsFixed(2)}",
+                style: TextStyle(
+                  color: MyColor.textGraey,
+                  fontSize: isWide ? 13 : 10,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          Divider(height: isWide ? 32 : 30.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Total",
+                style: TextStyle(
+                  fontSize: isWide ? 18 : 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                "\$${productProvider.total.toStringAsFixed(2)}",
+                style: TextStyle(
+                  fontSize: isWide ? 18 : 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: isWide ? 24 : 17.h),
+          GestureDetector(
+            onTap: () {
+              context.push("/shippingMethod");
+            },
+            child: SizedBox(
+              width: double.infinity,
+              height: isWide ? 50 : 55.h,
+              child: Container(
+                height: isWide ? 50 : 60.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(isWide ? 8 : 5.r),
+                  gradient: const LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      MyColor.gradientGreen,
+                      MyColor.animationGreen,
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "Checkout",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: isWide ? 14 : 12,
+                      color: MyColor.bg1,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if (!isWide) SizedBox(height: 17.h),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final productProvider = context.watch<ProductProvider>();
+    double screenWidth = MediaQuery.of(context).size.width;
+    final bool isWide = screenWidth > 800;
 
     return PopScope(
       canPop: false,
@@ -38,26 +179,32 @@ class _CartPageState extends State<CartPage> {
           title: const Text("Shopping Cart"),
         ),
         body: productProvider.cartItems.isEmpty
-            ? EmptyScreenWidget(
+            ? const EmptyScreenWidget(
                 icon: MyIcon.shoppingBag,
                 title: "Your cart is empty!",
                 description: "Add items to your cart to start shopping!",
               )
-            : Column(
+            : Flex(
+                direction: isWide ? Axis.horizontal : Axis.vertical,
+                crossAxisAlignment: isWide
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.stretch,
                 children: [
+                  // 1. Cart Items List (flex: 5 on wide screens)
                   Expanded(
+                    flex: isWide ? 5 : 1,
                     child: Container(
                       color: MyColor.bg3,
                       child: Padding(
-                        padding: EdgeInsets.all(17.r),
+                        padding: EdgeInsets.all(isWide ? 20 : 17.r),
                         child: ListView.builder(
                           itemCount: productProvider.cartItems.length,
                           itemBuilder: (context, index) {
                             final item = productProvider.cartItems[index];
                             return Padding(
-                              padding: EdgeInsets.only(bottom: 12.h),
+                              padding: const EdgeInsets.only(bottom: 12),
                               child: SizedBox(
-                                height: 100.h,
+                                height: isWide ? 100 : 100.h,
                                 child: Stack(
                                   children: [
                                     // 1. Red delete button (behind)
@@ -72,8 +219,8 @@ class _CartPageState extends State<CartPage> {
                                         alignment: Alignment.centerRight,
                                         color: MyColor.dltRed,
                                         child: SizedBox(
-                                          width: 80.w,
-                                          child: Icon(
+                                          width: isWide ? 80 : 80.w,
+                                          child: const Icon(
                                             MyIcon.trash,
                                             color: MyColor.bg1,
                                           ),
@@ -86,8 +233,12 @@ class _CartPageState extends State<CartPage> {
                                       duration: const Duration(
                                         milliseconds: 250,
                                       ),
-                                      left: openedIndex == index ? -80.w : 0,
-                                      right: openedIndex == index ? 80.w : 0,
+                                      left: openedIndex == index
+                                          ? (isWide ? -80 : -80.w)
+                                          : 0,
+                                      right: openedIndex == index
+                                          ? (isWide ? 80 : 80.w)
+                                          : 0,
                                       top: 0,
                                       bottom: 0,
                                       child: GestureDetector(
@@ -103,39 +254,53 @@ class _CartPageState extends State<CartPage> {
                                           }
                                         },
                                         child: Container(
-                                          height: 100.h,
+                                          height: isWide ? 100 : 100.h,
                                           width: double.infinity,
                                           color: MyColor.bg1,
                                           child: Row(
                                             children: [
-                                              ///leading
+                                              /// Leading
                                               Padding(
-                                                padding: EdgeInsets.all(11.r),
+                                                padding:
+                                                    const EdgeInsets.all(11),
                                                 child: SizedBox(
-                                                  width: 70.w,
-                                                  height: 100.h,
+                                                  width: isWide ? 70 : 70.w,
+                                                  height: isWide ? 100 : 100.h,
                                                   child: Stack(
-                                                    alignment: Alignment.center,
-                                                    clipBehavior: Clip.none,
+                                                    alignment:
+                                                        Alignment.center,
+                                                    clipBehavior:
+                                                        Clip.none,
                                                     children: [
                                                       Container(
-                                                        height: 64.r,
-                                                        width: 64.r,
+                                                        height: isWide
+                                                            ? 64
+                                                            : 64.r,
+                                                        width: isWide
+                                                            ? 64
+                                                            : 64.r,
                                                         decoration:
                                                             BoxDecoration(
-                                                              color:
-                                                                  item.bgColor,
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                            ),
+                                                          color: item.bgColor,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                        ),
                                                       ),
                                                       Positioned(
-                                                        bottom: -8.h,
-                                                        top: 16.h,
+                                                        bottom: isWide
+                                                            ? -8
+                                                            : -8.h,
+                                                        top: isWide
+                                                            ? 16
+                                                            : 16.h,
                                                         child: Image.asset(
                                                           item.image,
-                                                          width: 85.w,
-                                                          height: 80.h,
+                                                          width: isWide
+                                                            ? 85
+                                                            : 85.w,
+                                                          height: isWide
+                                                            ? 80
+                                                            : 80.h,
                                                           fit: BoxFit.contain,
                                                         ),
                                                       ),
@@ -144,21 +309,20 @@ class _CartPageState extends State<CartPage> {
                                                 ),
                                               ),
 
-                                              ///middle content
+                                              /// Middle Content
                                               Expanded(
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(11.r),
+                                                  padding:
+                                                      const EdgeInsets.all(11),
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                        CrossAxisAlignment.start,
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                        MainAxisAlignment.center,
                                                     children: [
                                                       Text(
                                                         "\$${item.price.toStringAsFixed(2)}",
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.w500,
                                                           fontSize: 10,
@@ -166,10 +330,12 @@ class _CartPageState extends State<CartPage> {
                                                               .animationGreen,
                                                         ),
                                                       ),
-                                                      SizedBox(height: 2.h),
+                                                      SizedBox(
+                                                        height: isWide ? 2 : 2.h,
+                                                      ),
                                                       Text(
                                                         item.name,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 12,
                                                           fontWeight:
                                                               FontWeight.w600,
@@ -177,7 +343,7 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                       Text(
                                                         item.quantity,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 10,
                                                           fontWeight:
                                                               FontWeight.w400,
@@ -190,7 +356,7 @@ class _CartPageState extends State<CartPage> {
                                                 ),
                                               ),
 
-                                              ///trailing
+                                              /// Trailing Stepper
                                               Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -199,23 +365,21 @@ class _CartPageState extends State<CartPage> {
                                                   GestureDetector(
                                                     onTap: () {
                                                       context
-                                                          .read<
-                                                            ProductProvider
-                                                          >()
+                                                          .read<ProductProvider>()
                                                           .increaseQuantity(
                                                             item,
                                                           );
                                                     },
-                                                    child: Icon(
+                                                    child: const Icon(
                                                       MyIcon.add,
-                                                      size: 20.sp,
+                                                      size: 20,
                                                       color: MyColor
                                                           .animationGreen,
                                                     ),
                                                   ),
                                                   Text(
                                                     "${productProvider.cartQuantities[item.id] ?? 1}",
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       fontSize: 12,
@@ -225,23 +389,23 @@ class _CartPageState extends State<CartPage> {
                                                   GestureDetector(
                                                     onTap: () {
                                                       context
-                                                          .read<
-                                                            ProductProvider
-                                                          >()
+                                                          .read<ProductProvider>()
                                                           .decreaseQuantity(
                                                             item,
                                                           );
                                                     },
-                                                    child: Icon(
+                                                    child: const Icon(
                                                       MyIcon.remove,
-                                                      size: 20.sp,
+                                                      size: 20,
                                                       color: MyColor
                                                           .animationGreen,
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(width: 10.w),
+                                              SizedBox(
+                                                width: isWide ? 10 : 10.w,
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -256,119 +420,19 @@ class _CartPageState extends State<CartPage> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(20.r),
-                    color: MyColor.bg1,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Subtotal",
-                              style: TextStyle(
-                                color: MyColor.textGraey,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              "\$${productProvider.subTotal}",
-                              style: TextStyle(
-                                color: MyColor.textGraey,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Shipping charges",
-                              style: TextStyle(
-                                color: MyColor.textGraey,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              "\$${productProvider.shipping}",
-                              style: TextStyle(
-                                color: MyColor.textGraey,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(height: 30.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Total",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              "\$${productProvider.total}",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 17.h),
-                        GestureDetector(
-                          onTap: () {
-                            context.push("/shippingMethod");
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => ShippingMethods1Screen(),
-                            //   ),
-                            // );
-                          },
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 55.h,
-                            child: Container(
-                              height: 60.h,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.r),
-                                gradient: const LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    MyColor.gradientGreen,
-                                    MyColor.animationGreen,
-                                  ],
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Checkout",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12,
-                                    color: MyColor.bg1,
-                                  ),
-                                ),
-                              ),
+                  isWide
+                      ? Expanded(
+                          flex: 2,
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.all(20),
+                            child: _buildPaymentSummary(
+                              context,
+                              productProvider,
+                              isWide,
                             ),
                           ),
-                        ),
-                        SizedBox(height: 17.h),
-                      ],
-                    ),
-                  ),
+                        )
+                      : _buildPaymentSummary(context, productProvider, isWide),
                 ],
               ),
       ),

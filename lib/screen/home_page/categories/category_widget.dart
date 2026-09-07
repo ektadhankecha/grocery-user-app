@@ -13,35 +13,33 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Title Row
         Padding(
-          padding: EdgeInsets.only(left: 17.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Categories",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: screenWidth > 550 ? 22 : 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               IconButton(
                 splashRadius: 50,
                 onPressed: () {
-                  context.push("/category",extra:categories);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) => CategoriesScreen(categories: categories),
-                  //   ),
-                  // );
+                  context.push("/category", extra: categories);
                 },
                 constraints: const BoxConstraints(),
                 padding: EdgeInsets.zero,
                 icon: Icon(
                   MyIcon.arrowForward,
-                  size: 18.sp,
+                  size: screenWidth > 550 ? 22 : 18,
                   color: MyColor.textGraey,
                 ),
               ),
@@ -49,53 +47,44 @@ class CategoryWidget extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: 4.h),
+        SizedBox(height: 8.h),
 
         /// Category List
-        SizedBox(
-          height: 78.h,
-          child: ListView.builder(
-            //   padding: EdgeInsets.zero,
-            scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(
-                  left: 17.w,
-                  right: index == categories.length - 1 ? 17.w : 0,
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 50.r,
-                      width: 50.r,
-                      decoration: BoxDecoration(
-                        color: categories[index].bgColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
+        Padding(
+          padding: EdgeInsets.only(left: 17.w),
+          child: SizedBox(
+            height: screenWidth > 550 ? 87.h : 78.h,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.only(right: screenWidth > 550 ? 20 : 17),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: screenWidth > 550 ? 30.r : 25.r,
+                        backgroundColor: categories[index].bgColor,
                         child: SvgPicture.asset(
                           categories[index].image,
-                          height: 25.h,
-                          width: 25.w,
+                          height: screenWidth > 550 ? 30.h : 25.h,
+                          width: screenWidth > 550 ? 30.w : 25.w,
                         ),
                       ),
-                    ),
-
-                    SizedBox(height: 8.h),
-
-                    Text(
-                      categories[index].name,
-                      style: TextStyle(
-                        fontSize: 9,
-                        fontWeight: FontWeight.w500,
-                        color: MyColor.textGraey,
+                      SizedBox(height: 8.h),
+                      Text(
+                        categories[index].name,
+                        style: TextStyle(
+                          fontSize: screenWidth > 550 ? 11 : 9,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.textGraey,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ],

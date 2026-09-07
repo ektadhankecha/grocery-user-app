@@ -20,22 +20,13 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 75.h,
-        backgroundColor: MyColor.bg1,
-
         leading: IconButton(
           onPressed: () {
             context.pop();
-            //Navigator.pop(context);
           },
-          icon: Icon(MyIcon.arrowBack, size: 22.sp),
+          icon: const Icon(MyIcon.arrowBack),
         ),
-        title: Center(
-          child: Text(
-            "Vegetables",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          ),
-        ),
+        title: const Text("Vegetables"),
       ),
       body: Container(
         height: double.infinity,
@@ -47,11 +38,11 @@ class _ProductScreenState extends State<ProductScreen> {
             shrinkWrap: false,
             physics: const BouncingScrollPhysics(),
             itemCount: widget.product.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 15.w,
-              mainAxisSpacing: 15.h,
-              childAspectRatio: 0.71,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 180,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+              childAspectRatio: 0.74,
             ),
             itemBuilder: (context, index) {
               return GestureDetector(

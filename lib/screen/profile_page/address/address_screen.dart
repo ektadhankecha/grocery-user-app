@@ -77,28 +77,39 @@ class _AddressScreenState extends State<AddressScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 81.h,
-        backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
             context.pop();
-            //Navigator.pop(context);
           },
-          icon: Icon(MyIcon.arrowBack, size: 22.sp),
+          icon: const Icon(MyIcon.arrowBack),
         ),
-        centerTitle: true,
-        title: Text(
-          "Add Address",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-        ),
+        title: const Text("Add Address"),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          color: MyColor.bg3,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(17, 30, 17, 37),
+        child: Center(
+          child: Container(
+            width: isWide ? 500 : double.infinity,
+            margin: isWide
+                ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
+                : EdgeInsets.zero,
+            padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+            decoration: isWide
+                ? BoxDecoration(
+              color: MyColor.bg1,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(12),
+                  blurRadius: 16,
+                  spreadRadius: 2,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            )
+                : null,
             child: Column(
               children: [
                 Form(
@@ -118,6 +129,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         selectionControls: null,
                         enableInteractiveSelection: true,
                         decoration: InputDecoration(
+                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                           errorStyle: const TextStyle(fontSize: 0, height: 0),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red, width: 2),
@@ -154,6 +166,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         selectionControls: null,
                         enableInteractiveSelection: true,
                         decoration: InputDecoration(
+                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                           errorStyle: const TextStyle(fontSize: 0, height: 0),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red, width: 2),
@@ -196,6 +209,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         selectionControls: null,
                         enableInteractiveSelection: true,
                         decoration: InputDecoration(
+                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                           errorStyle: const TextStyle(fontSize: 0, height: 0),
                           counterText: "",
                           errorBorder: OutlineInputBorder(
@@ -235,6 +249,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         selectionControls: null,
                         enableInteractiveSelection: true,
                         decoration: InputDecoration(
+                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                           errorStyle: const TextStyle(fontSize: 0, height: 0),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red, width: 2),
@@ -271,6 +286,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         selectionControls: null,
                         enableInteractiveSelection: true,
                         decoration: InputDecoration(
+                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                           errorStyle: const TextStyle(fontSize: 0, height: 0),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red, width: 2),
@@ -310,6 +326,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         selectionControls: null,
                         enableInteractiveSelection: true,
                         decoration: InputDecoration(
+                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                           errorStyle: const TextStyle(fontSize: 0, height: 0),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red, width: 2),
@@ -336,13 +353,13 @@ class _AddressScreenState extends State<AddressScreen> {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
-                          fontFamily: 'poppins',
                           color: MyColor.textGraey,
                         ),
                         dropdownColor: MyColor.bg1,
                         menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
 
                         decoration: InputDecoration(
+                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                           errorStyle: const TextStyle(fontSize: 0, height: 0),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.red, width: 2),

@@ -123,14 +123,16 @@ final GoRouter appRouter = GoRouter(
       builder: ((context, state) => OrderSuccessScreen()),
     ),
     GoRoute(path: "/payment", builder: ((context, state) => PaymentScreen())),
-    GoRoute(path: "/addCard",
-    builder: ((context, state) => AddCard())),
+    GoRoute(path: "/addCard", builder: ((context, state) => AddCard())),
     GoRoute(
       path: "/shippingAddress",
       builder: ((context, state) => ShippingAddressScreen()),
     ),
-    GoRoute(path: "/address",builder: ((context, state) => AddressScreen())),
-    GoRoute(path: "/myAddress",builder: ((context, state) => MyAddressScreen())),
+    GoRoute(path: "/address", builder: ((context, state) => AddressScreen())),
+    GoRoute(
+      path: "/myAddress",
+      builder: ((context, state) => MyAddressScreen()),
+    ),
     GoRoute(
       path: "/shippingMethod",
       builder: ((context, state) => ShippingMethods1Screen()),
@@ -169,13 +171,19 @@ final GoRouter appRouter = GoRouter(
         return ProductScreen(product: product);
       },
     ),
-    GoRoute(path: "/search",builder: ((context, state) => SearchScreen())),
-    GoRoute(path: "/favourite",builder: ((context, state) => FavouritePage())),
-    GoRoute(path: "/aboutMe",builder: ((context, state) => AboutMeScreen())),
-    GoRoute(path: "/order",builder: ((context, state) => OrderScreen())),
-    GoRoute(path: "/myCard",builder: ((context, state) => MyCardsScreen())),
-    GoRoute(path: "/transaction",builder: ((context, state) => TransactionsScreen())),
-    GoRoute(path: "/notification",builder: ((context, state) => NotificationScreen())),
+    GoRoute(path: "/search", builder: ((context, state) => SearchScreen())),
+    GoRoute(path: "/favourite", builder: ((context, state) => FavouritePage())),
+    GoRoute(path: "/aboutMe", builder: ((context, state) => AboutMeScreen())),
+    GoRoute(path: "/order", builder: ((context, state) => OrderScreen())),
+    GoRoute(path: "/myCard", builder: ((context, state) => MyCardsScreen())),
+    GoRoute(
+      path: "/transaction",
+      builder: ((context, state) => TransactionsScreen()),
+    ),
+    GoRoute(
+      path: "/notification",
+      builder: ((context, state) => NotificationScreen()),
+    ),
   ],
 );
 
@@ -219,10 +227,9 @@ class MyApp extends StatelessWidget {
               centerTitle: true,
               iconTheme: IconThemeData(size: 22, color: Colors.black),
               titleTextStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
                 color: Colors.black,
-                fontFamily: 'poppins',
               ),
             ),
             scaffoldBackgroundColor: MyColor.bg3,

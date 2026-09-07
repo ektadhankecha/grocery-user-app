@@ -3,10 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/data/dummy_data.dart';
-import 'package:grocery_app/screen/home_page/featured_product/product_detail_screen.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_card.dart';
 import 'package:grocery_app/utils/app_colors.dart';
-import 'package:grocery_app/screen/home_page/featured_product/product_screen.dart';
 
 class FeaturedProductWidget extends StatefulWidget {
   const FeaturedProductWidget({super.key});
@@ -18,35 +16,34 @@ class FeaturedProductWidget extends StatefulWidget {
 class _FeaturedProductWidgetState extends State<FeaturedProductWidget> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Title
         Padding(
-          padding: const EdgeInsets.only(left: 17),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Featured products",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: screenWidth > 550 ? 22 : 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               IconButton(
                 splashRadius: 50,
                 onPressed: () {
-                  context.push("/product",extra: products);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) => ProductScreen(product: products),
-                  //   ),
-                  // );
+                  context.push("/product", extra: products);
                 },
                 constraints: const BoxConstraints(),
                 padding: EdgeInsets.zero,
                 icon: Icon(
                   MyIcon.arrowForward,
-                  size: 18.sp,
+                  size: screenWidth > 550 ? 22 : 18,
                   color: MyColor.textGraey,
                 ),
               ),
@@ -58,29 +55,22 @@ class _FeaturedProductWidgetState extends State<FeaturedProductWidget> {
 
         /// Product Grid
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 17),
+          padding: EdgeInsets.symmetric(horizontal: 17.w),
           child: GridView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: products.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 17.w,
-              mainAxisSpacing: 20.h,
-              childAspectRatio: 0.71,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 180,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 0.74,
             ),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: ()  {
-                  context.push("/productDetail",extra: products[index]);
-                  // await Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) =>
-                  //         ProductDetailScreen(product: products[index]),
-                  //   ),
-                  // );
+                onTap: () {
+                  context.push("/productDetail", extra: products[index]);
                 },
                 child: ProductCard(product: products[index]),
               );

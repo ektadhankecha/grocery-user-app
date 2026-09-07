@@ -11,96 +11,109 @@ class OrderSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: ((didPop, result) {
         if (didPop) return;
         context.go("/main");
-        // Navigator.pushAndRemoveUntil(
-        //   context,
-        //   MaterialPageRoute(builder: (_) => const MainScreen()),
-        //   (route) => false,
-        // );
+
       }),
       child: Scaffold(
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(17, 0, 17, 25),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(80, 180, 80, 180),
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      MyIcon.shoppingBag,
-                      size: 140,
-                      color: MyColor.animationGreen,
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "Your order was Successful!",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 15),
-                    Text(
-                      "You will get a response within a few minutes.",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: MyColor.textGraey,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+        body: Center(
+          child: Container(
+            width: isWide ? 500 : double.infinity,
+           height: double.infinity,
+           // height: isWide ? 560 : double.infinity,
+            margin: isWide
+                ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
+                : EdgeInsets.zero,
+            padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+            decoration: isWide
+                ? BoxDecoration(
+              color: MyColor.bg1,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(12),
+                  blurRadius: 16,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 4),
                 ),
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: () {
-                  context.push("/trackOrder");
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => TrackOrderScreen()),
-                  // );
-                },
-                child: Container(
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.r),
-                    gradient: const LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [MyColor.gradientGreen, MyColor.animationGreen],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: MyColor.animationGreen.withAlpha(40),
-                        blurRadius: 9,
-                        spreadRadius: 0,
-                        offset: Offset(0, 10),
+              ],
+            )
+                : null,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(80, 180, 80, 180),
+                  child: Column(
+                    children: [
+                      Icon(
+                        MyIcon.shoppingBag,
+                        size: 140,
+                        color: MyColor.animationGreen,
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        "Your order was Successful!",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 15),
+                      Text(
+                        "You will get a response within a few minutes.",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: MyColor.textGraey,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
-                  child: Center(
-                    child: Text(
-                      "Track Order ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                        color: MyColor.bg1,
+                ),
+                Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    context.push("/trackOrder");
+
+                  },
+                  child: Container(
+                    height: 60.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.r),
+                      gradient: const LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [MyColor.gradientGreen, MyColor.animationGreen],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: MyColor.animationGreen.withAlpha(40),
+                          blurRadius: 9,
+                          spreadRadius: 0,
+                          offset: Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Track Order ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: MyColor.bg1,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

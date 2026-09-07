@@ -51,7 +51,7 @@ class BottomNavigator extends StatelessWidget {
                                     Icon(
                                       icons[index],
                                       color: MyColor.textGraey,
-                                      size: 25.sp,
+                                      size: 25,
                                     ),
                                     Consumer<ProductProvider>(
                                       builder:
@@ -92,7 +92,7 @@ class BottomNavigator extends StatelessWidget {
                               : Icon(
                                   icons[index],
                                   color: MyColor.textGraey,
-                                  size: 25.sp,
+                                  size: 25,
                                 ),
                         ),
                       ),
@@ -102,28 +102,29 @@ class BottomNavigator extends StatelessWidget {
               ),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 300),
-                left: selectedIndex * itemWidth + (itemWidth - 70.w) / 2,
-                top: -20.h,
+                curve: Curves.easeInOut,
+                left: selectedIndex * itemWidth + (itemWidth - 65) / 2,
+                top: -20,
 
                 child: Container(
-                  width: 65.r,
-                  height: 65.r,
+                  width: 65,
+                  height: 65,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: Container(
-                      width: 56.r,
-                      height: 56.r,
+                      width: 56,
+                      height: 56,
                       decoration: BoxDecoration(
                         color: MyColor.animationGreen,
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.green.withValues(alpha: 0.3),
-                            blurRadius: 4.r,
-                            offset: Offset(0, 4.h),
+                            blurRadius: 4,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
@@ -135,7 +136,7 @@ class BottomNavigator extends StatelessWidget {
                                   Icon(
                                     icons[selectedIndex],
                                     color: MyColor.bg1,
-                                    size: 28.sp,
+                                    size: 28,
                                   ),
 
                                   Consumer<ProductProvider>(
@@ -173,7 +174,7 @@ class BottomNavigator extends StatelessWidget {
                             : Icon(
                                 icons[selectedIndex],
                                 color: MyColor.bg1,
-                                size: 28.sp,
+                                size: 28,
                               ),
                       ),
                     ),

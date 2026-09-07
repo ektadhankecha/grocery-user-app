@@ -18,6 +18,7 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
     return Column(
       children: [
         Padding(
@@ -125,11 +126,11 @@ class _CardWidgetState extends State<CardWidget> {
           ),
         ),
         if (isExpanded) ...[
-          Divider(height: 0, thickness: 2, color: MyColor.bg3),
+          Divider(height: 0, thickness: 2, color:  isWide ? MyColor.bg1 : MyColor.bg3,),
           Container(
             margin: EdgeInsets.only(top: 12),
             padding: EdgeInsets.all(16),
-            color: MyColor.bg1,
+            color: isWide ? MyColor.bg3 : MyColor.bg1,
 
             child: Column(
               children: [
@@ -142,7 +143,7 @@ class _CardWidgetState extends State<CardWidget> {
                     fontWeight: FontWeight.w500,
                   ),
                   decoration: InputDecoration(
-                    fillColor: MyColor.bg3,
+                    fillColor:  isWide ? MyColor.bg1 : MyColor.bg3,
                     prefixIcon: Icon(
                       MyIcon.profileCircle,
                       size: 24,
@@ -162,7 +163,7 @@ class _CardWidgetState extends State<CardWidget> {
                     fontWeight: FontWeight.w500,
                   ),
                   decoration: InputDecoration(
-                    fillColor: MyColor.bg3,
+                    fillColor:  isWide ? MyColor.bg1 : MyColor.bg3,
                     prefixIcon: Icon(
                       MyIcon.cardbox,
                       size: 24,
@@ -185,7 +186,7 @@ class _CardWidgetState extends State<CardWidget> {
                           fontWeight: FontWeight.w500,
                         ),
                         decoration: InputDecoration(
-                          fillColor: MyColor.bg3,
+                          fillColor: isWide ? MyColor.bg1 : MyColor.bg3,
                           prefixIcon: Icon(
                             MyIcon.calender,
                             size: 24,
@@ -209,7 +210,7 @@ class _CardWidgetState extends State<CardWidget> {
                           fontWeight: FontWeight.w500,
                         ),
                         decoration: InputDecoration(
-                          fillColor: MyColor.bg3,
+                          fillColor:  isWide ? MyColor.bg1 : MyColor.bg3,
                           prefixIcon: Icon(
                             MyIcon.lock,
                             size: 24,

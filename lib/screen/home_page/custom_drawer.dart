@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:grocery_app/screen/profile_page/profile_provider.dart';
-import 'package:grocery_app/screen/home_page/home_screen.dart';
-import 'package:grocery_app/screen/cart_page/cart_screen.dart';
-import 'package:grocery_app/screen/favorite_page/favourite_screen.dart';
-import 'package:grocery_app/screen/profile_page/profile_screen.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,9 +13,11 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
     final userProvider = context.watch<UserProvider>();
     return Drawer(
-      width: MediaQuery.of(context).size.width * 0.65,
+      //   width: MediaQuery.of(context).size.width * 0.65,
+      width: isWide ? 400 : MediaQuery.of(context).size.width * 0.65,
       backgroundColor: MyColor.searchGraey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -92,39 +91,27 @@ class CustomDrawer extends StatelessWidget {
                       ),
                       leading: Icon(drawer[index].icon),
                       onTap: () {
+                        Scaffold.of(context).closeDrawer();
                         switch (drawer[index].id) {
                           case "home":
-                            // Navigator.pushAndRemoveUntil(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => HomeScreen(),
-                            //   ),
-                            //   (route) => false,
-                            // );
+                            context
+                                .read<BottomNavigationProvider>()
+                                .changeIndex(0);
                             break;
                           case "profile":
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => ProfilePage(),
-                            //   ),
-                            // );
+                            context
+                                .read<BottomNavigationProvider>()
+                                .changeIndex(3);
                             break;
                           case "like":
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => FavouritePage(),
-                            //   ),
-                            // );
+                            context
+                                .read<BottomNavigationProvider>()
+                                .changeIndex(1);
                             break;
                           case "cart":
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => CartPage(),
-                            //   ),
-                            // );
+                            context
+                                .read<BottomNavigationProvider>()
+                                .changeIndex(2);
                             break;
                         }
                       },

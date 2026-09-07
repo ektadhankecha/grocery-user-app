@@ -47,15 +47,15 @@ class TrackStep extends StatelessWidget {
               if (!isLast)
                 Expanded(
                   child: Container(
-                    width: 1.w,
-                    height: 40.h,
+                    width: 1,
+                    height: 40,
                     color: MyColor.dividerLine,
                   ),
                 ),
             ],
           ),
 
-          SizedBox(width: 16.w),
+          SizedBox(width: 16),
 
           /// RIGHT SIDE (Text)
           Expanded(
@@ -67,19 +67,19 @@ class TrackStep extends StatelessWidget {
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
 
-                  SizedBox(height: 5.h),
+                  SizedBox(height: 5),
 
                   Text(
                     date,
-                    style: TextStyle(fontSize: 10.sp, color: MyColor.textGraey),
+                    style: TextStyle(fontSize: 10, color: MyColor.textGraey),
                   ),
 
-                  SizedBox(height: 15.h),
+                  SizedBox(height: 15),
 
                   /// Horizontal Divider
                   if (!isLast)

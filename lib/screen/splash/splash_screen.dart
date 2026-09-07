@@ -27,24 +27,11 @@ class _SplashScreenState extends State<SplashScreen> {
       if (isComplete) {
         if (isLogin) {
           context.go("/main");
-
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => MainScreen()),
-          // );
         } else {
           context.go("/auth");
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => AuthPage()),
-          // );
         }
       } else {
         context.go("/onBoarding");
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => OnboardingScreen()),
-        // );
       }
     });
   }
@@ -64,24 +51,27 @@ class _SplashScreenState extends State<SplashScreen> {
             margin: EdgeInsets.only(top: 96.h, left: 50.w, right: 50.w),
             child: Column(
               children: [
-                Text(
-                  "Buy Premium Quality Fruits",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'poppinsbold',
+                Center(
+                  child: Text(
+                    "Buy Premium Quality Fruits",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 17.h),
-                Text(
-                  "Order premium quality fruits at affordable prices and enjoy fast, reliable home delivery.",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                    color: MyColor.textGraey,
+                Center(
+                  child: Text(
+                    "Order premium quality fruits at affordable prices and enjoy fast, reliable home delivery.",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                      color: MyColor.textGraey,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/model/product_model.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +9,7 @@ class ProductCard extends StatefulWidget {
   final ProductModel product;
 
   const ProductCard({super.key, required this.product});
+
   @override
   State<StatefulWidget> createState() => _ProductCardState();
 }
@@ -21,10 +21,8 @@ class _ProductCardState extends State<ProductCard> {
     switch (badge) {
       case "New":
         return MyColor.newclr;
-
       case "-16%":
         return MyColor.offclr;
-
       default:
         return Colors.grey;
     }
@@ -34,10 +32,8 @@ class _ProductCardState extends State<ProductCard> {
     switch (badge) {
       case "New":
         return MyColor.newtext;
-
       case "-16%":
         return MyColor.offtext;
-
       default:
         return Colors.grey;
     }
@@ -46,14 +42,16 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 181.w,
-      height: 234.h,
-      decoration: const BoxDecoration(color: MyColor.bg1),
+      decoration: BoxDecoration(
+        color: MyColor.bg1,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 6),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 /// Favourite Icon
                 Align(
@@ -61,22 +59,18 @@ class _ProductCardState extends State<ProductCard> {
                   child: Consumer<ProductProvider>(
                     builder: (context, provider, child) {
                       return InkWell(
-                        borderRadius: BorderRadius.circular(20.r),
+                        borderRadius: BorderRadius.circular(20),
                         onTap: () {
                           provider.toggleFavorite(widget.product);
-                          //  widget.onFavoriteChanged?.call();
                         },
-                        child: Padding(
-                          padding: EdgeInsets.all(0.r),
-                          child: Icon(
-                            widget.product.isFavorite
-                                ? MyIcon.favorite
-                                : MyIcon.favoriteBorderSimple,
-                            size: 25.sp,
-                            color: widget.product.isFavorite
-                                ? MyColor.faviourtred
-                                : MyColor.textGraey,
-                          ),
+                        child: Icon(
+                          widget.product.isFavorite
+                              ? MyIcon.favorite
+                              : MyIcon.favoriteBorderSimple,
+                          size: 22,
+                          color: widget.product.isFavorite
+                              ? MyColor.faviourtred
+                              : MyColor.textGraey,
                         ),
                       );
                     },
@@ -84,71 +78,86 @@ class _ProductCardState extends State<ProductCard> {
                 ),
 
                 /// Product Image
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 15, left: 47),
-                      height: 84,
-                      width: 84,
-                      decoration: BoxDecoration(
-                        color: widget.product.bgColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final availableHeight = constraints.maxHeight;
+                          final availableWidth = constraints.maxWidth;
+                          final baseSize = (availableHeight * 0.70).clamp(50.0, availableWidth * 0.62);
 
-                    Padding(
-                      padding: EdgeInsets.only(top: 21.h),
-                      child: Image.asset(
-                        widget.product.image,
-                        width: 130.w,
-                        height: 84.h,
-                        fit: BoxFit.contain,
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                height: baseSize,
+                                width: baseSize,
+                                decoration: BoxDecoration(
+                                  color: widget.product.bgColor,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              Image.asset(
+                                widget.product.image,
+                                height: baseSize * 1.05,
+                                width: baseSize * 1.35,
+                                fit: BoxFit.contain,
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
-                  ],
+                  ),
                 ),
 
-                SizedBox(height: 8.h),
+                const SizedBox(height: 4),
 
                 /// Price
                 Text(
                   "\$${widget.product.price.toStringAsFixed(2)}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: MyColor.animationGreen,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+
+                const SizedBox(height: 2),
 
                 /// Product Name
                 Text(
                   widget.product.name,
-                  style: TextStyle(
-                    fontFamily: 'poppinsbold',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
                   textAlign: TextAlign.center,
                 ),
 
-                SizedBox(height: 1.h),
+                const SizedBox(height: 1),
 
                 /// Quantity
                 Text(
                   widget.product.quantity,
-                  style: TextStyle(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
                     color: MyColor.textGraey,
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
 
-                const Spacer(),
+                const SizedBox(height: 6),
 
-                Divider(height: 1.h, color: MyColor.dividerLine),
-                SizedBox(height: 1),
+                const Divider(height: 1, color: MyColor.dividerLine),
 
+                /// Add to Cart
                 GestureDetector(
                   onTap: () {
                     context.read<ProductProvider>().addToCart(
@@ -159,41 +168,39 @@ class _ProductCardState extends State<ProductCard> {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Center(
-                          child: const Text(
+                          child: Text(
                             "Product added",
-                            style: TextStyle(fontSize: 10),
+                            style: TextStyle(fontSize: 12),
                           ),
                         ),
-                        duration: const Duration(seconds: 1),
+                        duration: Duration(seconds: 1),
                         behavior: SnackBarBehavior.floating,
                         backgroundColor: MyColor.animationGreen,
                         margin: EdgeInsets.symmetric(
-                          horizontal: 130,
-                          vertical: 50,
+                          horizontal: 100,
+                          vertical: 40,
                         ),
                         dismissDirection: DismissDirection.up,
                       ),
                     );
                   },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 1),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6, horizontal: 1),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           MyIcon.shoppingBag,
-                          size: 16.sp,
+                          size: 15,
                           color: MyColor.animationGreen,
                         ),
-
-                        SizedBox(width: 8.w),
-
+                        SizedBox(width: 6),
                         Text(
                           "Add to cart",
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 11,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -205,13 +212,19 @@ class _ProductCardState extends State<ProductCard> {
             ),
           ),
 
+          /// Badge
           if (widget.product.badge != null)
             Positioned(
+              top: 0,
+              left: 0,
               child: Container(
-                width: 38.w,
-                height: 18.h,
+                width: 38,
+                height: 18,
                 decoration: BoxDecoration(
                   color: getBadgeColor(widget.product.badge!),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                  ),
                 ),
                 child: Center(
                   child: Text(

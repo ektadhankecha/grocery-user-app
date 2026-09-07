@@ -14,22 +14,13 @@ class CategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 75.h,
-        backgroundColor: MyColor.bg1,
-
         leading: IconButton(
           onPressed: () {
             context.pop();
-            //Navigator.pop(context);
           },
-          icon: Icon(MyIcon.arrowBack, size: 22.sp),
+          icon: const Icon(MyIcon.arrowBack),
         ),
-        title: Center(
-          child: Text(
-            "Categories",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-        ),
+        title: const Text("Categories"),
       ),
 
       body: Container(
@@ -37,38 +28,30 @@ class CategoriesScreen extends StatelessWidget {
         width: double.infinity,
         color: MyColor.bg3,
         child: GridView.builder(
-          shrinkWrap: false,
-          physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.all(17.r),
+        //  shrinkWrap: false,
+        //  physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 17,vertical: 17),
           itemCount: categories.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10.w,
-            mainAxisSpacing: 14.h,
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 130,
+            crossAxisSpacing: 17,
+            mainAxisSpacing: 17,
             childAspectRatio: 1,
           ),
           itemBuilder: (context, index) {
-            return Container(
-              width: 120.w,
-              height: 120.h,
-
-              color: MyColor.catebg,
-              child: Center(
+            return
+              Container(
+                color: MyColor.bg1,
                 child: Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 16.h),
-                      width: 66.r,
-                      height: 66.r,
-                      decoration: BoxDecoration(
-                        color: categories[index].bgColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(categories[index].image),
-                      ),
+                    Spacer(),
+                    CircleAvatar(
+                      radius: 30.r,
+                      backgroundColor: categories[index].bgColor,
+                      child: SvgPicture.asset(categories[index].image,width: 25.w,height: 25.h),
                     ),
-                    SizedBox(height: 9.h),
+
+                    SizedBox(height: 9),
                     Text(
                       categories[index].name,
                       style: TextStyle(
@@ -77,10 +60,11 @@ class CategoriesScreen extends StatelessWidget {
                         color: MyColor.textGraey,
                       ),
                     ),
+
+                    Spacer(),
                   ],
                 ),
-              ),
-            );
+              );
           },
         ),
       ),

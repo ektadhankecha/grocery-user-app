@@ -29,24 +29,17 @@ class FavouritePage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 81.h,
-          backgroundColor: MyColor.bg1,
           leading: IconButton(
             onPressed: () {
               if (fromBottomNav) {
                 context.read<BottomNavigationProvider>().changeIndex(0);
               } else {
                 context.pop();
-                //Navigator.pop(context);
               }
             },
-            icon: Icon(MyIcon.arrowBack, size: 22.sp),
+            icon: const Icon(MyIcon.arrowBack),
           ),
-          centerTitle: true,
-          title: Text(
-            "Favorites",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-          ),
+          title: const Text("Favorites"),
         ),
         body: favoriteProduct.isEmpty
             ? EmptyScreenWidget(icon: MyIcon.heartRemove, title: "No Favorites Yet", description: "Save products you love here and find them easily later.")
@@ -60,11 +53,11 @@ class FavouritePage extends StatelessWidget {
                     shrinkWrap: false,
                     physics: const BouncingScrollPhysics(),
                     itemCount: favoriteProduct.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 15.w,
-                      mainAxisSpacing: 15.h,
-                      childAspectRatio: 0.71,
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 180,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                      childAspectRatio: 0.74,
                     ),
                     itemBuilder: (context, index) {
                       return GestureDetector(

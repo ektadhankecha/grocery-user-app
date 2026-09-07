@@ -45,6 +45,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
     required TextEditingController controller,
     required String? Function(String?) validator,
     required TextInputType keyboardType,
+    required bool isWide,
   }) {
     final tempController = TextEditingController(text: controller.text);
     final dialogFormKey = GlobalKey<FormState>();
@@ -56,8 +57,12 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
           builder: (context, dialogSetState) {
             return Dialog(
               backgroundColor: Colors.transparent,
+              insetPadding: isWide
+                  ? const EdgeInsets.symmetric(horizontal: 40, vertical: 24)
+                  : const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
               child: Container(
-                padding: EdgeInsets.all(20),
+                width: isWide ? 400 : double.infinity,
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: MyColor.bg1,
                   borderRadius: BorderRadius.circular(20),
@@ -218,29 +223,39 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 81.h,
-        backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
             context.pop();
-            //Navigator.pop(context);
           },
-          icon: Icon(MyIcon.arrowBack, size: 22.sp),
+          icon: Icon(MyIcon.arrowBack),
         ),
-        centerTitle: true,
-        title: Text(
-          "About Me",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-        ),
+        title: Text("About Me"),
       ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        color: MyColor.bg3,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(17, 30, 17, 36),
+      body: Center(
+        child: Container(
+          height: double.infinity,
+          width: isWide ? 500 : double.infinity,
+          margin: isWide
+              ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
+              : EdgeInsets.zero,
+          padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+          decoration: isWide
+              ? BoxDecoration(
+            color: MyColor.bg1,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(12),
+                blurRadius: 16,
+                spreadRadius: 2,
+                offset: Offset(0, 4),
+              ),
+            ],
+          )
+              : null,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -264,6 +279,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                       ),
 
                       decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                         prefixIcon: const Icon(
                           MyIcon.profileCircle,
                           size: 24,
@@ -272,6 +288,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                         suffixIcon: IconButton(
                           onPressed: () {
                             showEditDialog(
+                              isWide: isWide,
                               keyboardType: TextInputType.text,
                               title: "Edit Name",
                               icon: MyIcon.profileCircle,
@@ -305,6 +322,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                       ),
 
                       decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                         prefixIcon: const Icon(
                           MyIcon.email,
                           size: 24,
@@ -318,6 +336,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                           ),
                           onPressed: () {
                             showEditDialog(
+                              isWide: isWide,
                               keyboardType: TextInputType.emailAddress,
                               title: "Edit Email",
                               icon: MyIcon.email,
@@ -354,6 +373,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
 
                       // enabled: false,
                       decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
                         prefixIcon: const Icon(
                           MyIcon.call,
                           size: 24,
@@ -367,6 +387,7 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
                           ),
                           onPressed: () {
                             showEditDialog(
+                              isWide: isWide,
                               keyboardType: TextInputType.number,
                               title: "Edit Contact",
                               icon: MyIcon.phone,

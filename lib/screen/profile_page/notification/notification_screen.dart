@@ -35,120 +35,130 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 81.h,
-        backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
             context.pop();
-            //Navigator.pop(context);
           },
-          icon: Icon(MyIcon.arrowBack, size: 22.sp),
+          icon: const Icon(MyIcon.arrowBack),
         ),
-        centerTitle: true,
-        title: Text(
-          "Notification",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-        ),
+        title: const Text("Notification"),
       ),
       backgroundColor: MyColor.bg3,
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(17, 19, 17, 25),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: notificationData.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    color: MyColor.bg1,
-                    padding: EdgeInsets.fromLTRB(0, 10, 8, 10),
-                    margin: EdgeInsets.symmetric(vertical: 7),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: ListTile(
-                        title: Text(
-                          notificationData[index].title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
+      body: Center(
+        child: Container(
+          width: isWide ? 500 : double.infinity,
+          margin: isWide
+              ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
+              : EdgeInsets.zero,
+          padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+          decoration: isWide
+              ? BoxDecoration(
+            color: MyColor.bg1,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(12),
+                blurRadius: 16,
+                spreadRadius: 2,
+                offset: Offset(0, 4),
+              ),
+            ],
+          )
+              : null,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: notificationData.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      color: isWide ? MyColor.bg3 : MyColor.bg1,
+                      padding: EdgeInsets.fromLTRB(0, 10, 8, 10),
+                      margin: EdgeInsets.symmetric(vertical: 7),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ListTile(
+                          title: Text(
+                            notificationData[index].title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                        subtitle: Text(
-                          notificationData[index].description,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 10,
+                          subtitle: Text(
+                            notificationData[index].description,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 10,
+                            ),
                           ),
-                        ),
-                        trailing: Transform.scale(
-                          scale: 0.6,
-                          child: Switch(
-                            value: notificationData[index].isEnable,
-                            onChanged: (value) async {
-                              setState(() {
-                                notificationData[index].isEnable = value;
-                              });
-                              SharedPreferences pref =
-                                  await SharedPreferences.getInstance();
-                              await pref.setBool("notification_$index", value);
-                            },
-                            activeThumbColor: MyColor.bg1,
-                            activeTrackColor: MyColor.animationGreen,
-                            inactiveTrackColor: MyColor.bg1,
-                            inactiveThumbColor: MyColor.animationGreen,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
+                          trailing: Transform.scale(
+                            scale: 0.6,
+                            child: Switch(
+                              value: notificationData[index].isEnable,
+                              onChanged: (value) async {
+                                setState(() {
+                                  notificationData[index].isEnable = value;
+                                });
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
+                                await pref.setBool("notification_$index", value);
+                              },
+                              activeThumbColor: MyColor.bg1,
+                              activeTrackColor: MyColor.animationGreen,
+                              inactiveTrackColor: MyColor.bg1,
+                              inactiveThumbColor: MyColor.animationGreen,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                            ),
                           ),
+                          // horizontalTitleGap: 12,
+                          contentPadding: EdgeInsets.only(left: 12),
                         ),
-                        // horizontalTitleGap: 12,
-                        contentPadding: EdgeInsets.only(left: 12),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  context.push("/main");
+                  },
+                child: Container(
+                  height: 60.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.r),
+                    gradient: const LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [MyColor.gradientGreen, MyColor.animationGreen],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: MyColor.animationGreen.withAlpha(40),
+                        blurRadius: 9,
+                        spreadRadius: 0,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Save Setting",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: MyColor.bg1,
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                context.push("/main");
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => HomeScreen()),
-                // );
-              },
-              child: Container(
-                height: 60.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.r),
-                  gradient: const LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [MyColor.gradientGreen, MyColor.animationGreen],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: MyColor.animationGreen.withAlpha(40),
-                      blurRadius: 9,
-                      spreadRadius: 0,
-                      offset: Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    "Save Setting",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      color: MyColor.bg1,
-                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

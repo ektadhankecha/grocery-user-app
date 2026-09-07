@@ -68,177 +68,190 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWide = MediaQuery.of(context).size.width > 600;
     final orderProvider = context.watch<OrderProvider>();
 
     return Scaffold(
       backgroundColor: MyColor.bg3,
       appBar: AppBar(
-        toolbarHeight: 81.h,
-        backgroundColor: MyColor.bg1,
         leading: IconButton(
           onPressed: () {
             context.pop();
-            //Navigator.pop(context);
           },
-          icon: Icon(MyIcon.arrowBack, size: 22.sp),
+          icon: const Icon(MyIcon.arrowBack),
         ),
-        centerTitle: true,
-        title: Text(
-          "My Order",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-        ),
+        title: const Text("My Order"),
       ),
-      body: orderProvider.orderList.isEmpty
-          ? EmptyScreenWidget(
-              icon: MyIcon.shoppingBag,
-              title: "No Orders Yet",
-              description: "You haven't placed any orders yet.",
-            )
-          : Padding(
-              padding: const EdgeInsets.fromLTRB(17, 20, 17, 20),
-              child: ListView.builder(
-                itemCount: orderProvider.orderList.length,
-                itemBuilder: (context, index) {
-                  final order = orderProvider.orderList[index];
-                  final item = order.items.first;
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Container(
-                      color: MyColor.bg1,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              children: [
-                                Stack(
+      body: Center(
+        child: Container(
+          width: isWide ? 500 : double.infinity,
+          margin: isWide
+              ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
+              : EdgeInsets.zero,
+          padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+          decoration: isWide
+              ? BoxDecoration(
+            color: MyColor.bg1,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(12),
+                blurRadius: 16,
+                spreadRadius: 2,
+                offset: Offset(0, 4),
+              ),
+            ],
+          )
+              : null,
+          child: orderProvider.orderList.isEmpty
+              ? EmptyScreenWidget(
+                  icon: MyIcon.shoppingBag,
+                  title: "No Orders Yet",
+                  description: "You haven't placed any orders yet.",
+                )
+              : Padding(
+                  padding: const EdgeInsets.fromLTRB(17, 20, 17, 20),
+                  child: ListView.builder(
+                    itemCount: orderProvider.orderList.length,
+                    itemBuilder: (context, index) {
+                      final order = orderProvider.orderList[index];
+                      final item = order.items.first;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Container(
+                          color: isWide ? MyColor.bg3 : MyColor.bg1,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 33,
-                                      backgroundColor: Color(item.bgColor),
-                                      child: Image.asset(
-                                        item.productImage,
-                                        width: 70,
-                                        height: 70,
-                                      ),
-                                    ),
-                                    // Show badge only if there is more than 1 item in the order
-                                    if (order.items.length > 1)
-                                      Positioned(
-                                        right: 0,
-                                        bottom: 0,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 5,
-                                            vertical: 2,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: MyColor.animationGreen,
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            "+${order.items.length - 1}",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 8,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                                SizedBox(width: 10),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Order #${order.orderNumber}",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Placed on ${DateFormat('MMMM dd yyyy').format(order.orderDate)}",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 8,
-                                        color: MyColor.textGraey,
-                                      ),
-                                    ),
-                                    SizedBox(height: 3),
-                                    Row(
+                                    Stack(
                                       children: [
-                                        RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: "Items: ",
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'poppins',
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text: order.totalItems
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontFamily: 'poppins',
-                                                ),
-                                              ),
-                                            ],
+                                        CircleAvatar(
+                                          radius: 33,
+                                          backgroundColor: Color(item.bgColor),
+                                          child: Image.asset(
+                                            item.productImage,
+                                            width: 70,
+                                            height: 70,
                                           ),
                                         ),
-                                        SizedBox(width: 8),
-                                        RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: "Total Amount: ",
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'poppins',
-                                                  color: Colors.black,
+                                        // Show badge only if there is more than 1 item in the order
+                                        if (order.items.length > 1)
+                                          Positioned(
+                                            right: 0,
+                                            bottom: 0,
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 5,
+                                                vertical: 2,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: MyColor.animationGreen,
+                                                borderRadius: BorderRadius.circular(
+                                                  10,
                                                 ),
                                               ),
-                                              TextSpan(
-                                                text: order.totalPrice
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontFamily: 'poppins',
+                                              child: Text(
+                                                "+${order.items.length - 1}",
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 8,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                            ],
+                                            ),
                                           ),
+                                      ],
+                                    ),
+                                    SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Order #${order.orderNumber}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Placed on ${DateFormat('MMMM dd yyyy').format(order.orderDate)}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 8,
+                                            color: MyColor.textGraey,
+                                          ),
+                                        ),
+                                        SizedBox(height: 3),
+                                        Row(
+                                          children: [
+                                            RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: "Items: ",
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: order.totalItems
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(width: 8),
+                                            RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: "Total Amount: ",
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: order.totalPrice
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+        ),
+      ),
     );
   }
 }

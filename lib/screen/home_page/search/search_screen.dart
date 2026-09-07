@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grocery_app/screen/empty_screen_widget.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,6 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final productProvider = context.watch<ProductProvider>();
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: MyColor.bg3,
       appBar: AppBar(
@@ -45,45 +47,56 @@ class _SearchScreenState extends State<SearchScreen> {
         leading: IconButton(
           onPressed: () {
             context.pop();
-           // Navigator.pop(context);
-          },
-          icon: Icon(MyIcon.arrowBack, size: 22.sp),
+            },
+          icon: Icon(MyIcon.arrowBack, size: 22),
         ),
         titleSpacing: 0,
         title: TextField(
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: screenWidth > 550 ? 15 : 13),
           controller: searchController,
-          textInputAction: TextInputAction.search,
           onSubmitted: (value) {
-            context.read<ProductProvider>().searchProducts(value);
+            if (value.trim().isNotEmpty) {
+              context.read<ProductProvider>().searchProducts(value.trim());
+            } else {
+              context.read<ProductProvider>().nothingSearch();
+            }
           },
           onChanged: (value) {
-            if (value.isEmpty) {
+            if (value.trim().isEmpty) {
               context.read<ProductProvider>().nothingSearch();
             }
           },
           decoration: InputDecoration(
             fillColor: MyColor.searchGraey,
             hintText: "Search keywords..",
-            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             hintStyle: TextStyle(
               color: MyColor.textGraey,
-              fontSize: 12,
-              fontFamily: "Poppins",
+              fontSize: screenWidth > 550 ? 14 : 12,
               fontWeight: FontWeight.w400,
             ),
-            suffixIcon: const Icon(
-              MyIcon.search,
-              color: MyColor.textGraey,
-              size: 22,
+            suffixIcon: InkWell(
+              onTap: () {
+                final query = searchController.text.trim();
+                if (query.isNotEmpty) {
+                  context.read<ProductProvider>().searchProducts(query);
+                } else {
+                  context.read<ProductProvider>().nothingSearch();
+                }
+              },
+              child: const Icon(
+                MyIcon.search,
+                color: MyColor.textGraey,
+                size: 22,
+              ),
             ),
           ),
           cursorColor: Colors.black,
         ),
-        actions: [SizedBox(width: 20)],
+        actions: const [SizedBox(width: 20)],
       ),
       body: !productProvider.hasSearched
-          //default screen
+          // Default screen (History & Discover More)
           ? SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,18 +104,18 @@ class _SearchScreenState extends State<SearchScreen> {
                   if (productProvider.searchHistory.isNotEmpty) ...[
                     SizedBox(height: 10.h),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 17,
                         vertical: 10,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             "Search History",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                              fontSize: screenWidth > 550 ? 18 : 15,
                             ),
                           ),
                           GestureDetector(
@@ -111,11 +124,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                   .read<ProductProvider>()
                                   .clearSearchHistory();
                             },
-                            child: const Text(
+                            child: Text(
                               "Clear",
                               style: TextStyle(
                                 color: MyColor.blue,
-                                fontSize: 12,
+                                fontSize: screenWidth > 550 ? 15 : 12,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -124,7 +137,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      padding: EdgeInsets.symmetric(horizontal: 17),
                       child: Wrap(
                         spacing: 8,
                         runSpacing: 8,
@@ -150,7 +163,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 style: TextStyle(
                                   color: MyColor.textGraey,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 10,
+                                  fontSize: screenWidth > 550 ? 12 : 10,
                                 ),
                               ),
                             ),
@@ -161,25 +174,30 @@ class _SearchScreenState extends State<SearchScreen> {
                     SizedBox(height: 10.h),
                   ],
                   Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 17,
                       vertical: 10,
                     ),
-                    child: const Text(
+                    child: Text(
                       "Discover More",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: screenWidth > 550 ? 18 : 15,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 17),
+                    padding: EdgeInsets.symmetric(horizontal: 17),
                     child: Wrap(
                       spacing: 8,
                       runSpacing: 8,
                       children: productProvider.discoverMore.map((item) {
-                        return Container(
+                        return GestureDetector(
+                          onTap: () {
+                            searchController.text = item;
+                            context.read<ProductProvider>().searchProducts(item);
+                          },
+                          child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 8,
                               vertical: 8,
@@ -193,104 +211,60 @@ class _SearchScreenState extends State<SearchScreen> {
                               style: TextStyle(
                                 color: MyColor.textGraey,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 10,
+                                fontSize: screenWidth > 550 ? 12 : 10,
                               ),
                             ),
-                          );
-
+                          ),
+                        );
                       }).toList(),
                     ),
                   ),
                 ],
               ),
             )
-          //search after screen
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 17,
-                      bottom: 17,
-                      left: 17,
-                      right: 17,
-                    ),
-                    child: productProvider.searchResults.isEmpty
-                        //empty screen
-                        ? Container(
-
-                            width: double.infinity,
-                            color: MyColor.bg3,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 200),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      MyIcon.searchOff,
-                                      size: 100,
-                                      color: MyColor.animationGreen,
-                                    ),
-                                    SizedBox(height: 20),
-                                    Text(
-                                      "No Product found",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'poppins',
-                                      ),
-                                    ),
-                                    Text(
-                                      "Try searching with different name",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: 'poppins',
-                                        color: MyColor.textGraey,
-                                      ),
-                                    ),
-                                  ],
+          // Search Results Empty State
+          : productProvider.searchResults.isEmpty
+              ? const EmptyScreenWidget(
+                  icon: MyIcon.searchOff,
+                  title: "No Product found",
+                  description: "Try searching with different name",
+                )
+              // Search Results Grid
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(17),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: productProvider.searchResults.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 180,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 15,
+                            childAspectRatio: 0.74,
+                          ),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ProductDetailScreen(
+                                  product: productProvider
+                                      .searchResults[index],
                                 ),
                               ),
-                            ),
-                          )
-                        //filterData show
-                        : GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: productProvider.searchResults.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15,
-                                  childAspectRatio: 0.62,
-                                ),
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => ProductDetailScreen(
-                                        product: productProvider
-                                            .searchResults[index],
-                                      ),
-                                    ),
-                                  );
-                                  // if (mounted) setState(() {});
-                                },
-                                child: ProductCard(
-                                  product: productProvider.searchResults[index],
-                                ),
-                              );
-                            },
+                            );
+                          },
+                          child: ProductCard(
+                            product: productProvider.searchResults[index],
                           ),
+                        );
+                      },
+                    ),
                   ),
-                ],
-              ),
-            ),
+                ),
     );
   }
 }

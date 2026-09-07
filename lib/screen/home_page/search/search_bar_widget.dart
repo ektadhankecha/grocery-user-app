@@ -10,25 +10,21 @@ class SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.fromLTRB(17.w, 0, 17.w, 0),
+      padding: EdgeInsets.symmetric(horizontal: 17.w),
       child: TextField(
         readOnly: true,
         onTap: () {
           context.push("/search");
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => SearchScreen()),
-          // );
-        },
+          },
         decoration: InputDecoration(
           fillColor: MyColor.searchGraey,
 
           hintText: "Search keywords..",
           hintStyle: TextStyle(
             color: MyColor.textGraey,
-            fontSize: 12,
-            fontFamily: "Poppins",
+            fontSize: screenWidth > 400 ? 16 : 14,
             fontWeight: FontWeight.w400,
           ),
 

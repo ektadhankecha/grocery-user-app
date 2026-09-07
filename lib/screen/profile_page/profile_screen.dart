@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
-import 'package:grocery_app/screen/profile_page/card/my_cards_screen.dart';
-import 'package:grocery_app/screen/profile_page/notification/notification_screen.dart';
-import 'package:grocery_app/screen/profile_page/order/order_screen.dart';
-import 'package:grocery_app/screen/profile_page/transaction/transactions_screen.dart';
 import 'package:grocery_app/utils/app_icons.dart';
-import 'package:grocery_app/screen/profile_page/about_me/about_me_screen.dart';
-import 'package:grocery_app/screen/profile_page/address/my_address_screen.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/data/profile_data.dart';
-import 'package:grocery_app/screen/favorite_page/favourite_screen.dart';
-import 'package:grocery_app/auth/auth_page.dart';
 import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,7 +63,6 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'poppins',
                         ),
                       ),
                     ),
@@ -95,16 +86,11 @@ class ProfilePage extends StatelessWidget {
 
                 title: const Text(
                   "Camera",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    fontFamily: 'poppins',
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
                 subtitle: Text(
                   "Take a new photo",
                   style: TextStyle(
-                    fontFamily: 'poppins',
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: MyColor.textGraey,
@@ -148,16 +134,11 @@ class ProfilePage extends StatelessWidget {
 
                 title: const Text(
                   "Gallery",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    fontFamily: 'poppins',
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
                 subtitle: Text(
                   "Choose from gallery",
                   style: TextStyle(
-                    fontFamily: 'poppins',
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: MyColor.textGraey,
@@ -187,6 +168,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
+    final bool isWide = MediaQuery.of(context).size.width > 600;
 
     return PopScope(
       canPop: false,
@@ -195,174 +177,169 @@ class ProfilePage extends StatelessWidget {
         context.read<BottomNavigationProvider>().changeIndex(0);
       }),
       child: Scaffold(
-        body: Stack(
-          children: [
-            Container(height: double.infinity, color: MyColor.bg3),
-            Container(height: 145.h, color: MyColor.bg1),
-            Positioned(
-              top: 70.h,
-              left: 110.w,
-              right: 110.w,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Consumer<ProfileProvider>(
-                    builder: (context, provider, child) {
-                      return CircleAvatar(
-                        backgroundImage: provider.profileImage != null
-                            ? FileImage(provider.profileImage!)
-                            : const AssetImage("assets/images/profile.png")
-                                  as ImageProvider,
+        body: Center(
+          child: Container(
+            width: isWide ? 500 : double.infinity,
+            margin: isWide
+                ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
+                : EdgeInsets.zero,
+            padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+            decoration: isWide
+                ? BoxDecoration(
+                    color: MyColor.bg1,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(12),
+                        blurRadius: 16,
+                        spreadRadius: 2,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  )
+                : null,
+            child: Stack(
+              children: [
+                Container(height: double.infinity, color: MyColor.bg3),
+                Container(height: 145.h, color: MyColor.bg1),
+                Positioned(
+                  top: 70.h,
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Stack(
+                        children: [
+                          Consumer<ProfileProvider>(
+                            builder: (context, provider, child) {
+                              return CircleAvatar(
+                                backgroundImage: provider.profileImage != null
+                                    ? FileImage(provider.profileImage!)
+                                    : const AssetImage(
+                                            "assets/images/profile.png",
+                                          )
+                                          as ImageProvider,
 
-                        radius: 60,
+                                radius: 60,
+                              );
+                            },
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                showProfilePictureSheet(context);
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: MyColor.textgreen,
+                                radius: 15,
+                                child: Icon(
+                                  MyIcon.camera,
+                                  color: MyColor.bg1,
+                                  size: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Text(
+                        userProvider.name,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        userProvider.email,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          color: MyColor.textGraey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Positioned(
+                  top: 220.h,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: ListView.builder(
+                    itemCount: profileData.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: Icon(
+                          profileData[index].icon,
+                          color: MyColor.textgreen,
+                        ),
+                        title: Text(
+                          profileData[index].title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10,
+                          ),
+                        ),
+                        trailing: index == profileData.length - 1
+                            ? null
+                            : Icon(
+                                MyIcon.arrowForward,
+                                color: MyColor.textGraey,
+                                size: 20,
+                              ),
+                        onTap: () async {
+                          switch (profileData[index].id) {
+                            case "logout":
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              await pref.setBool("LoginSuccess", false);
+                              context.go('/auth');
+
+                              break;
+                            case "fav":
+                              context.push("/favourite");
+
+                              break;
+                            case "about":
+                              context.push("/aboutMe");
+
+                              break;
+                            case "add":
+                              context.push("/myAddress");
+
+                              break;
+                            case "order":
+                              context.push("/order");
+
+                              break;
+                            case "cards":
+                              context.push("/myCard");
+
+                              break;
+                            case "transaction":
+                              context.push("/transaction");
+
+                              break;
+                            case "notification":
+                              context.push("/notification");
+
+                              break;
+                          }
+                        },
                       );
                     },
                   ),
-
-                  Text(
-                    userProvider.name,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    userProvider.email,
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                      color: MyColor.textGraey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 162.h,
-              left: 232.w,
-              child: GestureDetector(
-                onTap: () {
-                  showProfilePictureSheet(context);
-                },
-                child: CircleAvatar(
-                  backgroundColor: MyColor.textgreen,
-                  radius: 15,
-                  child: Icon(MyIcon.camera, color: MyColor.bg1, size: 18),
                 ),
-              ),
+              ],
             ),
-            Positioned(
-              top: 220.h,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: ListView.builder(
-                itemCount: profileData.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Icon(
-                      profileData[index].icon,
-                      color: MyColor.textgreen,
-                    ),
-                    title: Text(
-                      profileData[index].title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 10,
-                      ),
-                    ),
-                    trailing: index == profileData.length - 1
-                        ? null
-                        : Icon(
-                            MyIcon.arrowForward,
-                            color: MyColor.textGraey,
-                            size: 20,
-                          ),
-                    onTap: () async {
-                      switch (profileData[index].id) {
-                        case "logout":
-                          SharedPreferences pref =
-                              await SharedPreferences.getInstance();
-                          await pref.setBool("LoginSuccess", false);
-                         context.go('/auth');
-                          // context.push("/auth");
-                          // Navigator.pushAndRemoveUntil(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => AuthPage()),
-                          //   (route) => false,
-                          // );
-                          break;
-                        case "fav":
-                          context.push("/favourite");
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => FavouritePage(),
-                          //   ),
-                          // );
-                          break;
-                        case "about":
-                          context.push("/aboutMe");
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => AboutMeScreen(),
-                          //   ),
-                          // );
-                          break;
-                        case "add":
-                          context.push("/myAddress");
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => MyAddressScreen(),
-                          //   ),
-                          // );
-                          break;
-                        case "order":
-                          context.push("/order");
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => OrderScreen(),
-                          //   ),
-                          // );
-                          break;
-                        case "cards":
-                          context.push("/myCard");
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => MyCardsScreen(),
-                          //   ),
-                          // );
-                          break;
-                        case "transaction":
-                          context.push("/transaction");
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => TransactionsScreen(),
-                          //   ),
-                          // );
-                          break;
-                        case "notification":
-                          context.push("/notification");
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => NotificationScreen(),
-                          //   ),
-                          // );
-                          break;
-                      }
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
