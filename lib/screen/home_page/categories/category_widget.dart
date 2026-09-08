@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grocery_app/utils/app_icons.dart';
-
+import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:grocery_app/data/dummy_data.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'categories_screen.dart';
+import 'category_provider.dart';
 
 class CategoryWidget extends StatelessWidget {
   const CategoryWidget({super.key});
@@ -14,6 +14,9 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
+    final categoryProvider = context.watch<CategoryProvider>();
+   final categories = categoryProvider.categoryList;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,10 +68,11 @@ class CategoryWidget extends StatelessWidget {
                       CircleAvatar(
                         radius: screenWidth > 550 ? 30.r : 25.r,
                         backgroundColor: categories[index].bgColor,
-                        child: SvgPicture.asset(
+                        child: Image.network(
                           categories[index].image,
                           height: screenWidth > 550 ? 30.h : 25.h,
                           width: screenWidth > 550 ? 30.w : 25.w,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       SizedBox(height: 8.h),

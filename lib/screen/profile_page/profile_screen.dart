@@ -183,7 +183,7 @@ class ProfilePage extends StatelessWidget {
             margin: isWide
                 ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
                 : EdgeInsets.zero,
-            padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+           // padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
             decoration: isWide
                 ? BoxDecoration(
                     color: MyColor.bg1,

@@ -32,7 +32,8 @@ class _ShippingMethods1ScreenState extends State<ShippingMethods1Screen> {
       body: Center(
         child: Container(
           width: isWide ? 500 : double.infinity,
-          height: isWide ? 560 : double.infinity,
+       height: double.infinity,
+       //   height: isWide ? 560 : double.infinity,
           margin: isWide
               ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
               : EdgeInsets.zero,

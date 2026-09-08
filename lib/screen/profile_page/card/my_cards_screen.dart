@@ -66,74 +66,71 @@ class _MyCardsScreenState extends State<MyCardsScreen> {
                     context.push("/addCard");
                     },
                 )
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 20),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: cardProvider.cards.length,
-                            itemBuilder: (context, index) {
-                              final card = cardProvider.cards[index];
-                              return Container(
-                                margin: EdgeInsets.only(bottom: 5),
-                                decoration: BoxDecoration(
-                                  color: isWide ? MyColor.bg3 : MyColor.bg1,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: CardWidget(card: card),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: 10),
-
-                      GestureDetector(
-                        onTap: () {
-                          context.push("/addCard");
+              : Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: cardProvider.cards.length,
+                        itemBuilder: (context, index) {
+                          final card = cardProvider.cards[index];
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 5),
+                            decoration: BoxDecoration(
+                              color: isWide ? MyColor.bg3 : MyColor.bg1,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: CardWidget(card: card),
+                          );
                         },
+                      ),
+                    ),
+                  ),
 
-                        child: Container(
-                          height: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            gradient: const LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                MyColor.gradientGreen,
-                                MyColor.animationGreen,
-                              ],
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: MyColor.animationGreen.withAlpha(40),
-                                blurRadius: 9,
-                                spreadRadius: 0,
-                                offset: Offset(0, 10),
-                              ),
-                            ],
+                  SizedBox(height: 10),
+
+                  GestureDetector(
+                    onTap: () {
+                      context.push("/addCard");
+                    },
+
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.r),
+                        gradient: const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            MyColor.gradientGreen,
+                            MyColor.animationGreen,
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: MyColor.animationGreen.withAlpha(40),
+                            blurRadius: 9,
+                            spreadRadius: 0,
+                            offset: Offset(0, 10),
                           ),
-                          child: Center(
-                            child: Text(
-                              "Add Card",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                color: MyColor.bg1,
-                              ),
-                            ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Add Card",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                            color: MyColor.bg1,
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
+              ),
         ),
       ),
     );

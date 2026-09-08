@@ -1,5 +1,5 @@
 class OrderItemModel{
-  final int productId;
+  final String productId;
   final String productName;
   final String productImage;
   final int bgColor;

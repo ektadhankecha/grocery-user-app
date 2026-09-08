@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/auth/auth_page.dart';
 import 'package:grocery_app/auth/forget_password.dart';
@@ -16,9 +17,9 @@ import 'package:grocery_app/screen/cart_page/orders_process/shipping_methods_1_s
 import 'package:grocery_app/screen/cart_page/orders_process/teack_order/track_order_screen.dart';
 import 'package:grocery_app/screen/favorite_page/favourite_screen.dart';
 import 'package:grocery_app/screen/home_page/categories/categories_screen.dart';
+import 'package:grocery_app/screen/home_page/categories/category_provider.dart';
 import 'package:grocery_app/screen/home_page/featured_product/product_detail_screen.dart';
 import 'package:grocery_app/screen/home_page/featured_product/product_screen.dart';
-import 'package:grocery_app/screen/home_page/home_screen.dart';
 import 'package:grocery_app/screen/home_page/search/search_screen.dart';
 import 'package:grocery_app/screen/main_page/main_screen.dart';
 import 'package:grocery_app/screen/on_boarding/onboarding_screen.dart';
@@ -46,22 +47,26 @@ import 'package:grocery_app/utils/app_colors.dart';
 import 'screen/profile_page/profile_provider.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/order_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'firebase_options.dart';
 //import 'package:device_preview/device_preview.dart';
 //import 'package:flutter/foundation.dart';
 
-void main() {
+Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ),
   );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (_) {
-            final provider = ProductProvider(productList: products);
+            final provider = ProductProvider() ..listenProducts();
             provider.showData();
             provider.loadFavorite();
             provider.loadSearchHistory();
@@ -71,6 +76,7 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => ProfileProvider()..loadProfileImage(),
         ),
+        ChangeNotifierProvider(create: (_) => CategoryProvider()..listenToCategories()),
         ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),
         ChangeNotifierProvider(create: (_) => BannerProvider()),
         ChangeNotifierProvider(create: (_) => CardProvider()..loadCard()),
@@ -228,7 +234,8 @@ class MyApp extends StatelessWidget {
               iconTheme: IconThemeData(size: 22, color: Colors.black),
               titleTextStyle: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'poppins',
                 color: Colors.black,
               ),
             ),

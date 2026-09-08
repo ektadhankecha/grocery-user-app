@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/data/dummy_data.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_card.dart';
 import 'package:grocery_app/utils/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class FeaturedProductWidget extends StatefulWidget {
   const FeaturedProductWidget({super.key});
@@ -17,6 +19,7 @@ class _FeaturedProductWidgetState extends State<FeaturedProductWidget> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    final products = context.watch<ProductProvider>().productList;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

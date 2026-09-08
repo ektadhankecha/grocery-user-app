@@ -99,7 +99,7 @@ class _ProductCardState extends State<ProductCard> {
                                   shape: BoxShape.circle,
                                 ),
                               ),
-                              Image.asset(
+                              Image.network(
                                 widget.product.image,
                                 height: baseSize * 1.05,
                                 width: baseSize * 1.35,
@@ -213,31 +213,31 @@ class _ProductCardState extends State<ProductCard> {
           ),
 
           /// Badge
-          if (widget.product.badge != null)
-            Positioned(
-              top: 0,
-              left: 0,
-              child: Container(
-                width: 38,
-                height: 18,
-                decoration: BoxDecoration(
-                  color: getBadgeColor(widget.product.badge!),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    widget.product.badge!,
-                    style: TextStyle(
-                      color: getBadgeTextColor(widget.product.badge!),
-                      fontSize: 8,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          // if (widget.product.badge != null)
+          //   Positioned(
+          //     top: 0,
+          //     left: 0,
+          //     child: Container(
+          //       width: 38,
+          //       height: 18,
+          //       decoration: BoxDecoration(
+          //         color: getBadgeColor(widget.product.badge!),
+          //         borderRadius: const BorderRadius.only(
+          //           topLeft: Radius.circular(8),
+          //         ),
+          //       ),
+          //       child: Center(
+          //         child: Text(
+          //           widget.product.badge!,
+          //           style: TextStyle(
+          //             color: getBadgeTextColor(widget.product.badge!),
+          //             fontSize: 8,
+          //             fontWeight: FontWeight.w500,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );

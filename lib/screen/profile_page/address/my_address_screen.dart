@@ -39,7 +39,8 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
           margin: isWide
               ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
               : EdgeInsets.zero,
-          padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+
+        padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
           decoration: isWide
               ? BoxDecoration(
             color: MyColor.bg1,
@@ -66,74 +67,71 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
 
                   },
                 )
-              : Padding(
-                  padding: const EdgeInsets.fromLTRB(17, 20, 17, 20),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: addressProvider.addresses.length,
-                            itemBuilder: (context, index) {
-                              final address = addressProvider.addresses[index];
-                              return Container(
-                                margin: EdgeInsets.only(bottom: 5),
-                                decoration: BoxDecoration(
-                                  color: isWide ? MyColor.bg3 : MyColor.bg1,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: AddressWidget(address: address),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: 10),
-                      GestureDetector(
-                        onTap: () {
-                          context.push("/address");
-
+              : Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: addressProvider.addresses.length,
+                        itemBuilder: (context, index) {
+                          final address = addressProvider.addresses[index];
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 5),
+                            decoration: BoxDecoration(
+                              color: isWide ? MyColor.bg3 : MyColor.bg1,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: AddressWidget(address: address),
+                          );
                         },
+                      ),
+                    ),
+                  ),
 
-                        child: Container(
-                          height: 60.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r),
-                            gradient: const LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                MyColor.gradientGreen,
-                                MyColor.animationGreen,
-                              ],
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: MyColor.animationGreen.withAlpha(40),
-                                blurRadius: 9,
-                                spreadRadius: 0,
-                                offset: Offset(0, 10),
-                              ),
-                            ],
+                  SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      context.push("/address");
+
+                    },
+
+                    child: Container(
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.r),
+                        gradient: const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            MyColor.gradientGreen,
+                            MyColor.animationGreen,
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: MyColor.animationGreen.withAlpha(40),
+                            blurRadius: 9,
+                            spreadRadius: 0,
+                            offset: Offset(0, 10),
                           ),
-                          child: Center(
-                            child: Text(
-                              "Add address",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                                color: MyColor.bg1,
-                              ),
-                            ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Add address",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                            color: MyColor.bg1,
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
+              ),
         ),
       ),
     );

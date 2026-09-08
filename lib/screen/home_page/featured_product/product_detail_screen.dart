@@ -34,7 +34,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             shape: BoxShape.circle,
           ),
           alignment: Alignment.center,
-          child: Image.asset(
+          child: Image.network(
             widget.product.image,
             height: screenWidth > 1200 ? 320 : 280,
             width: screenWidth > 1200 ? 320 : 280,
@@ -67,7 +67,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             bottom: 75.h,
           ),
           child: Center(
-            child: Image.asset(
+            child: Image.network(
               widget.product.image,
               height: 324.h,
               width: 324.w,
@@ -167,70 +167,70 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ),
           ),
           const SizedBox(height: 6),
-          Row(
-            children: [
-              Text(
-                widget.product.rating.toString(),
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: screenWidth < 400
-                      ? 10
-                      : screenWidth <= 1200
-                      ? 12
-                      : 14,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Row(
-                children: List.generate(5, (index) {
-                  if (index < widget.product.rating.floor()) {
-                    return Icon(
-                      MyIcon.star,
-                      color: MyColor.staryellow,
-                      size: screenWidth < 400
-                          ? 15
-                          : screenWidth <= 1200
-                          ? 17
-                          : 19,
-                    );
-                  } else if (index < widget.product.rating) {
-                    return Icon(
-                      MyIcon.starHalf,
-                      color: MyColor.staryellow,
-                      size: screenWidth < 400
-                          ? 15
-                          : screenWidth <= 1200
-                          ? 17
-                          : 19,
-                    );
-                  } else {
-                    return Icon(
-                      MyIcon.starBorder,
-                      color: MyColor.staryellow,
-                      size: screenWidth < 400
-                          ? 15
-                          : screenWidth <= 1200
-                          ? 17
-                          : 19,
-                    );
-                  }
-                }),
-              ),
-              const SizedBox(width: 4),
-              Text(
-                "(${widget.product.reviews} reviews)",
-                style: TextStyle(
-                  fontSize: screenWidth < 400
-                      ? 10
-                      : screenWidth <= 1200
-                      ? 12
-                      : 14,
-                  fontWeight: FontWeight.w500,
-                  color: MyColor.textGraey,
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Text(
+          //       widget.product.rating.toString(),
+          //       style: TextStyle(
+          //         fontWeight: FontWeight.w600,
+          //         fontSize: screenWidth < 400
+          //             ? 10
+          //             : screenWidth <= 1200
+          //             ? 12
+          //             : 14,
+          //       ),
+          //     ),
+          //     const SizedBox(width: 4),
+          //     Row(
+          //       children: List.generate(5, (index) {
+          //         if (index < widget.product.rating.floor()) {
+          //           return Icon(
+          //             MyIcon.star,
+          //             color: MyColor.staryellow,
+          //             size: screenWidth < 400
+          //                 ? 15
+          //                 : screenWidth <= 1200
+          //                 ? 17
+          //                 : 19,
+          //           );
+          //         } else if (index < widget.product.rating) {
+          //           return Icon(
+          //             MyIcon.starHalf,
+          //             color: MyColor.staryellow,
+          //             size: screenWidth < 400
+          //                 ? 15
+          //                 : screenWidth <= 1200
+          //                 ? 17
+          //                 : 19,
+          //           );
+          //         } else {
+          //           return Icon(
+          //             MyIcon.starBorder,
+          //             color: MyColor.staryellow,
+          //             size: screenWidth < 400
+          //                 ? 15
+          //                 : screenWidth <= 1200
+          //                 ? 17
+          //                 : 19,
+          //           );
+          //         }
+          //       }),
+          //     ),
+          //     const SizedBox(width: 4),
+          //     Text(
+          //       "(${widget.product.reviews} reviews)",
+          //       style: TextStyle(
+          //         fontSize: screenWidth < 400
+          //             ? 10
+          //             : screenWidth <= 1200
+          //             ? 12
+          //             : 14,
+          //         fontWeight: FontWeight.w500,
+          //         color: MyColor.textGraey,
+          //       ),
+          //     ),
+          //   ],
+          // ),
           const SizedBox(height: 16),
           Text(
             widget.product.description,

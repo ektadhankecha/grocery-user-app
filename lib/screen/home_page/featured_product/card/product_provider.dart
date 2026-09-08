@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/model/product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,10 +6,10 @@ import 'dart:convert';
 
 class ProductProvider extends ChangeNotifier {
   List<ProductModel> searchResults = [];
-  List<ProductModel> productList;
+  List<ProductModel> productList = [];
   bool hasSearched = false;
   List<ProductModel> cartItems = [];
-  Map<int, int> cartQuantities = {};
+  Map<String, int> cartQuantities = {};
   List<String> searchHistory = [];
   List<String> discoverMore = [
     "Fresh Grocery",
@@ -19,7 +20,28 @@ class ProductProvider extends ChangeNotifier {
     "discounted items",
     "Fresh vegetables",
   ];
-  ProductProvider({required this.productList});
+ // ProductProvider({required this.productList});
+
+  void listenProducts(){
+    FirebaseFirestore.instance
+        .collection("products")
+        .snapshots()
+        .listen((snapshot){
+          print("Total docs found : ${snapshot.docs.length}");
+          for (var doc in snapshot.docs) {
+            print("Doc ID: ${doc.id}, Data: ${doc.data()}");
+          }
+          productList = snapshot.docs
+              .map((doc) => ProductModel.fromMap(doc.data(),doc.id)).toList();
+          print("Successfully mapped ${productList.length} products to list!");
+          notifyListeners();
+    },
+    onError: (error){
+      print("====== FIRESTORE ERROR ======");
+          print("Firebase product error : $error");
+    }
+    );
+  }
 
   Future<void> loadSearchHistory() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -129,7 +151,7 @@ class ProductProvider extends ChangeNotifier {
     if (cardData != null) {
       Map<String, dynamic> data = jsonDecode(cardData);
       cartQuantities = data.map(
-        (key, value) => MapEntry(int.parse(key), value as int),
+        (key, value) => MapEntry(key, value as int),
       );
       for (var product in productList) {
         if (cartQuantities.containsKey(product.id)) {

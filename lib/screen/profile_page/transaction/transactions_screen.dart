@@ -59,62 +59,59 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   description:
                       "Your completed orders payment transactions will appear here.",
                 )
-              : Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: ListView.builder(
-                    itemCount: transactionProvider.transactionList.length,
-                    itemBuilder: (context, index) {
-                      final transaction =
-                          transactionProvider.transactionList[index];
+              : ListView.builder(
+                itemCount: transactionProvider.transactionList.length,
+                itemBuilder: (context, index) {
+                  final transaction =
+                      transactionProvider.transactionList[index];
 
-                      return Container(
-                       // color: MyColor.bg1,
-                        color: isWide ? MyColor.bg3 : MyColor.bg1,
-                        padding: EdgeInsets.fromLTRB(0, 10, 8, 10),
-                        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            radius: 35,
-                            backgroundColor: MyColor.bggray,
-                            // foregroundColor: MyColor.animationGreen,
-                            child: Image.asset(
-                              "assets/images/cardicon.png",
-                              height: 22,
-                              width: 39,
-                            ),
-                          ),
+                  return Container(
+                   // color: MyColor.bg1,
+                    color: isWide ? MyColor.bg3 : MyColor.bg1,
+                    padding: EdgeInsets.fromLTRB(0, 10, 8, 10),
+                    margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        radius: 35,
+                      backgroundColor: isWide ? MyColor.aniGray : MyColor.bggray,
 
-                          title: Text(
-                            transaction.title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                            ),
-                          ),
-                          subtitle: Text(
-                            DateFormat(
-                              'MMM dd yyyy \'at\' h:mm a',
-                            ).format(transaction.transactionDate),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 10,
-                            ),
-                          ),
-                          trailing: Text(
-                            transaction.amount.toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: MyColor.textgreen,
-                            ),
-                          ),
-                          horizontalTitleGap: 12,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Image.asset(
+                          "assets/images/cardicon.png",
+                          height: 22,
+                          width: 39,
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
+
+                      title: Text(
+                        transaction.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                        ),
+                      ),
+                      subtitle: Text(
+                        DateFormat(
+                          'MMM dd yyyy \'at\' h:mm a',
+                        ).format(transaction.transactionDate),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 10,
+                        ),
+                      ),
+                      trailing: Text(
+                        transaction.amount.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          color: MyColor.textgreen,
+                        ),
+                      ),
+                      horizontalTitleGap: 12,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                    ),
+                  );
+                },
+              ),
         ),
       ),
     );

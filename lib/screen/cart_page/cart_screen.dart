@@ -293,7 +293,7 @@ class _CartPageState extends State<CartPage> {
                                                         top: isWide
                                                             ? 16
                                                             : 16.h,
-                                                        child: Image.asset(
+                                                        child: Image.network(
                                                           item.image,
                                                           width: isWide
                                                             ? 85
