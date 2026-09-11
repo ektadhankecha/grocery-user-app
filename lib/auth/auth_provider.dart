@@ -35,10 +35,10 @@ class AuthhProvider extends ChangeNotifier {
         GoogleAuthProvider googleProvider = GoogleAuthProvider();
         googleProvider.addScope('email');
         googleProvider.addScope('profile');
+        googleProvider.setCustomParameters({'prompt': 'select_account'});
         userCredential = await _auth.signInWithPopup(googleProvider);
 
       }else {
-       // final GoogleSignIn googleSignIn = GoogleSignIn();
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
         if(googleUser == null){
