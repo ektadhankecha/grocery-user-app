@@ -33,6 +33,7 @@ class ProductProvider extends ChangeNotifier {
           productList = snapshot.docs
               .map((doc) => ProductModel.fromMap(doc.data(),doc.id)).toList();
           loadFavorite();
+          _syncCartItems();
           print("Successfully mapped ${productList.length} products to list!");
           notifyListeners();
     },
@@ -41,6 +42,15 @@ class ProductProvider extends ChangeNotifier {
           print("Firebase product error : $error");
     }
     );
+  }
+
+  void _syncCartItems() {
+    cartItems.clear();
+    for (var product in productList) {
+      if (cartQuantities.containsKey(product.id.toString())) {
+        cartItems.add(product);
+      }
+    }
   }
 
   Future<void> loadSearchHistory() async {
@@ -157,10 +167,6 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-
-
-
-
   void clearCart() async{
     cartItems.clear();
     cartQuantities.clear();
@@ -194,10 +200,10 @@ class ProductProvider extends ChangeNotifier {
 
   void addToCart(ProductModel product, int quantity) {
     if (cartItems.contains(product)) {
-      cartItems.remove(product);
+      cartItems.insert(0, product);
     }
-    cartItems.insert(0, product);
-    cartQuantities[product.id] = (cartQuantities[product.id] ?? 0) + quantity;
+    final key = product.id.toString();
+    cartQuantities[key] = (cartQuantities[key] ?? 0) + quantity;
     saveCart();
     notifyListeners();
   }
@@ -216,7 +222,7 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> loadCart() async{
+  Future<void> loadCart() async {
     final user = FirebaseAuth.instance.currentUser;
     if(user == null){
       cartItems.clear();
@@ -238,71 +244,52 @@ class ProductProvider extends ChangeNotifier {
             cartItems.add(product);
           }
         }
+        _syncCartItems();
         notifyListeners();
-
       }
-
     }catch(e){
       debugPrint("Error loading cart from Firebase: $e");
     }
   }
-
-
-  // Future<void> showData() async {
-  //   SharedPreferences pref = await SharedPreferences.getInstance();
-  //   String? cardData = pref.getString("CardData");
-  //   if (cardData != null) {
-  //     Map<String, dynamic> data = jsonDecode(cardData);
-  //     cartQuantities = data.map(
-  //       (key, value) => MapEntry(key, value as int),
-  //     );
-  //     for (var product in productList) {
-  //       if (cartQuantities.containsKey(product.id)) {
-  //         cartItems.add(product);
-  //       }
-  //     }
-  //   }
-  //   notifyListeners();
-  // }
 
   int get cartBadgeCount {
     return cartQuantities.values.fold(0, (sum, qty) => sum + qty);
   }
 
   void increaseQuantity(ProductModel product) {
-    cartQuantities[product.id] = (cartQuantities[product.id] ?? 1) + 1;
-    cartItems.remove(product);
-    cartItems.insert(0, product);
+    final key = product.id.toString();
+    cartQuantities[key] = (cartQuantities[key] ?? 1) + 1;
+   // cartItems.remove(product);
+   // cartItems.insert(0, product);
     saveCart();
     notifyListeners();
   }
 
   void decreaseQuantity(ProductModel product) {
-    final currentQty = cartQuantities[product.id] ?? 1;
+    final key = product.id.toString();
+    final currentQty = cartQuantities[key] ?? 1;
 
     if (currentQty > 1) {
-      cartQuantities[product.id] = currentQty - 1;
+      cartQuantities[key] = currentQty - 1;
     } else {
       cartItems.remove(product);
-      cartQuantities.remove(product.id);
+      cartQuantities.remove(key);
     }
     saveCart();
-
     notifyListeners();
   }
 
   void productRemove(ProductModel product) {
     cartItems.remove(product);
-    cartQuantities.remove(product.id);
+    cartQuantities.remove(product.id.toString());
     saveCart();
-
     notifyListeners();
   }
 
   double get subTotal {
     double total = 0.0;
     for (var product in cartItems) {
-      int qty = cartQuantities[product.id] ?? 1;
+      int qty = cartQuantities[product.id.toString()] ?? 1;
       total += product.price * qty;
     }
     return total;

@@ -14,7 +14,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/data/profile_data.dart';
 import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'card/card_provider.dart';
 
@@ -123,10 +122,6 @@ class ProfilePage extends StatelessWidget {
                   }catch(e){
                     debugPrint("Image picker error: $e");
                   }
-
-                  // context.read<ProfileProvider>().pickProfileImage(
-                  //   ImageSource.camera,
-                  // );
                 },
               ),
 
@@ -184,9 +179,6 @@ class ProfilePage extends StatelessWidget {
                   }catch(e){
                     debugPrint("Image Picker error: $e");
                   }
-                  // context.read<ProfileProvider>().pickProfileImage(
-                  //   ImageSource.gallery,
-                  //  );
                 },
               ),
               SizedBox(height: 20),
@@ -216,7 +208,7 @@ class ProfilePage extends StatelessWidget {
             margin: isWide
                 ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
                 : EdgeInsets.zero,
-            // padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+
             decoration: isWide
                 ? BoxDecoration(
                     color: MyColor.bg1,
