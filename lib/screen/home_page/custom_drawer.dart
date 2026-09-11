@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:grocery_app/auth/auth_provider.dart';
 import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:grocery_app/screen/profile_page/profile_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
-import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:grocery_app/data/drawer_data.dart';
@@ -14,7 +16,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isWide = MediaQuery.of(context).size.width > 600;
-    final userProvider = context.watch<UserProvider>();
+    final authProvider = context.watch<AuthhProvider>();
     return Drawer(
       //   width: MediaQuery.of(context).size.width * 0.65,
       width: isWide ? 400 : MediaQuery.of(context).size.width * 0.65,
@@ -45,8 +47,14 @@ class CustomDrawer extends StatelessWidget {
                           radius: 40.r,
                           backgroundColor: MyColor.textGraey,
                           foregroundColor: MyColor.bg1,
-                          backgroundImage: provider.profileImage != null
-                              ? FileImage(provider.profileImage!)
+                          // backgroundImage: provider.profileImage != null
+                          //     ? FileImage(provider.profileImage!)
+                          backgroundImage:
+                          authProvider.userImage != null &&
+                              authProvider.userImage!.isNotEmpty
+                              ? MemoryImage(
+                            base64Decode(authProvider.userImage!),
+                          )
                               : const AssetImage("assets/images/profile.png")
                                     as ImageProvider,
                         );
@@ -55,14 +63,14 @@ class CustomDrawer extends StatelessWidget {
 
                     SizedBox(height: 10.h),
                     Text(
-                      userProvider.name,
+                      authProvider.userName ?? '',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
-                      userProvider.email,
+                      authProvider.userEmail ?? '',
                       style: TextStyle(
                         fontSize: 8,
                         fontWeight: FontWeight.w300,

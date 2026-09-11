@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
+import 'package:grocery_app/auth/auth_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,10 +23,10 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final userProvider = Provider.of<UserProvider>(context, listen: false);
-      nameController.text = userProvider.name;
-      emailController.text = userProvider.email;
-      phoneController.text = userProvider.contact;
+     final authProvider = context.read<AuthhProvider>();
+      nameController.text = authProvider.userName ?? '';
+      emailController.text = authProvider.userEmail ?? '';
+      phoneController.text = authProvider.userPhone ?? '';
     });
   }
 
@@ -416,11 +416,13 @@ class _AboutMeScreenState extends State<AboutMeScreen> {
               GestureDetector(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    context.read<UserProvider>().setUserData(
-                      name: nameController.text,
-                      email: emailController.text,
-                      contact: phoneController.text,
-                    );
+                    context.read<AuthhProvider>().updateUserData(name: nameController.text.trim(),
+                        phone: phoneController.text.trim());
+                    // context.read<UserProvider>().setUserData(
+                    //   name: nameController.text,
+                    //   email: emailController.text,
+                    //   contact: phoneController.text,
+                    // );
                     context.pop();
                     //Navigator.pop(context);
                   }

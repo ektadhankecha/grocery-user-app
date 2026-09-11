@@ -5,12 +5,20 @@ import 'dart:convert';
 
 class AddressProvider extends ChangeNotifier {
   final List<AddressModel> addresses = [];
+  AddressModel? selectedAddress;
+
+  void selectAddress(AddressModel address){
+    selectedAddress = address;
+    notifyListeners();
+  }
 
   Future<void> addAddresses(AddressModel address) async {
     addresses.add(address);
     await saveAddress();
     notifyListeners();
   }
+
+
 
   Future<void> saveAddress() async {
     SharedPreferences pref = await SharedPreferences.getInstance();

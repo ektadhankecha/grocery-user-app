@@ -48,7 +48,8 @@ class CategoriesScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 30.r,
                       backgroundColor: categories[index].bgColor,
-                      child: SvgPicture.asset(categories[index].image,width: 25.w,height: 25.h),
+                   child: Image.network(categories[index].image,width: 25.w,height: 25.h,),
+
                     ),
 
                     SizedBox(height: 9),

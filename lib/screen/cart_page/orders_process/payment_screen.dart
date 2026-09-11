@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:grocery_app/model/order_item_model.dart';
 import 'package:grocery_app/model/order_model.dart';
 import 'package:grocery_app/model/transactions_model.dart';
+import 'package:grocery_app/auth/auth_provider.dart';
+import 'package:grocery_app/screen/profile_page/address/address_provider.dart';
 import 'package:grocery_app/screen/profile_page/card/card_provider.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/order_provider.dart';
 import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
@@ -13,6 +15,7 @@ import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:grocery_app/screen/profile_page/card/card_widget.dart';
 import 'package:grocery_app/screen/empty_screen_widget.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../profile_page/card/add_card_screen.dart';
 
@@ -184,55 +187,119 @@ class _PaymentScreenState extends State<PaymentScreen> {
               GestureDetector(
                 onTap: canPay
                     ? () async {
-                        List<OrderItemModel> orderItems = productProvider
-                            .cartItems
-                            .map((product) {
-                              return OrderItemModel(
-                                productId: product.id,
-                                productName: product.name,
-                                productImage: product.image,
-                                bgColor: product.bgColor.toARGB32(),
-                                price: product.price,
-                                quantity:
-                                    productProvider.cartQuantities[product.id] ??
-                                    1,
-                              );
-                            })
-                            .toList();
-
-                        int totalItems = orderItems.fold(
-                          0,
+                  try {
+                    final authProvider = context.read<AuthhProvider>().user;
+                    final selectedAddress = context.read<AddressProvider>().selectedAddress;
+                    if (selectedAddress == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please select an address first")),
+                      );
+                      return;
+                    }
+                    List<OrderItemModel> orderItems = productProvider.cartItems.map((product) {
+                      return OrderItemModel(
+                        productId: product.id,
+                        productName: product.name,
+                        productImage: product.image,
+                        bgColor: product.bgColor.toARGB32(), // or product.bgColor.value for older Flutter
+                        price: product.price,
+                        quantity: productProvider.cartQuantities[product.id] ?? 1,
+                      );
+                    }).toList();
+                    int totalItems = orderItems.fold(
+                      0,
                           (sum, item) => sum + item.quantity,
-                        );
-                        String orderNum = await orderProvider
-                            .generateOrderNumber();
-                        double totalPrice = productProvider.total;
-                        OrderModel order = OrderModel(
-                          orderNumber: orderNum,
-                          items: orderItems,
-                          totalItems: totalItems,
-                          totalPrice: totalPrice,
-                          orderDate: DateTime.now(),
-                          status: "Pending",
-                        );
-                        await orderProvider.addOrder(order);
-
-                        double totalAmount = productProvider.total;
-                        TransactionsModel transaction = TransactionsModel(
-                          title: "MasterCard",
-                          transactionDate: DateTime.now(),
-                          amount: totalAmount,
-                        );
-                        await transactionProvider.addTransaction(transaction);
-                        productProvider.clearCart();
-                        context.push("/orderSuccess");
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => OrderSucessScreen(),
-                        //   ),
-                        // );
-                      }
+                    );
+                    String orderNum = await orderProvider.generateOrderNumber();
+                    double totalPrice = productProvider.total;
+                    OrderModel order = OrderModel(
+                      orderNumber: orderNum,
+                      items: orderItems,
+                      totalItems: totalItems,
+                      totalPrice: totalPrice,
+                      orderDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                      status: "Pending",
+                      paymentMethod: "Cash On delivery",
+                      user: authProvider,
+                      address: selectedAddress,
+                    );
+                    await orderProvider.addOrder(order);
+                    double totalAmount = productProvider.total;
+                    TransactionsModel transaction = TransactionsModel(
+                      title: "MasterCard",
+                      transactionDate: DateTime.now(),
+                      amount: totalAmount,
+                    );
+                    await transactionProvider.addTransaction(transaction);
+                    productProvider.clearCart();
+                    if (mounted) {
+                      context.push("/orderSuccess");
+                    }
+                  } catch (e) {
+                    debugPrint("Payment error: $e");
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Error placing order: $e")),
+                      );
+                    }
+                  }
+                }
+                //     () async {
+                //
+                // final authProvider = context.read<AuthhProvider>().user ;
+                //   final selectedAddress = context.read<AddressProvider>().selectedAddress;
+                //         List<OrderItemModel> orderItems = productProvider
+                //             .cartItems
+                //             .map((product) {
+                //               return OrderItemModel(
+                //                 productId: product.id,
+                //                 productName: product.name,
+                //                 productImage: product.image,
+                //                 bgColor: product.bgColor.toARGB32(),
+                //                 price: product.price,
+                //                 quantity:
+                //                     productProvider.cartQuantities[product.id] ??
+                //                     1,
+                //               );
+                //             })
+                //             .toList();
+                //
+                //         int totalItems = orderItems.fold(
+                //           0,
+                //           (sum, item) => sum + item.quantity,
+                //         );
+                //         String orderNum = await orderProvider
+                //             .generateOrderNumber();
+                //         double totalPrice = productProvider.total;
+                //         OrderModel order = OrderModel(
+                //           orderNumber: orderNum,
+                //           items: orderItems,
+                //           totalItems: totalItems,
+                //           totalPrice: totalPrice,
+                //           orderDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                //           status: "Pending",
+                //           paymentMethod: "Cash On delivery",
+                //           user: authProvider,
+                //           address:selectedAddress!,
+                //         );
+                //         await orderProvider.addOrder(order);
+                //
+                //         double totalAmount = productProvider.total;
+                //         TransactionsModel transaction = TransactionsModel(
+                //           title: "MasterCard",
+                //           transactionDate: DateTime.now(),
+                //           amount: totalAmount,
+                //         );
+                //         await transactionProvider.addTransaction(transaction);
+                //         productProvider.clearCart();
+                //         context.push("/orderSuccess");
+                //         // Navigator.push(
+                //         //   context,
+                //         //   MaterialPageRoute(
+                //         //     builder: (context) => OrderSucessScreen(),
+                //         //   ),
+                //         // );
+                //       }
                     : null,
                 child: Container(
                   height: 60.h,

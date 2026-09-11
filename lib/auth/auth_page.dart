@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grocery_app/auth/auth_provider.dart';
 import 'package:grocery_app/auth/responsive_layout.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
+import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -98,7 +100,18 @@ class Mobile extends StatelessWidget {
                     SizedBox(height: 27.h),
                     //google signup
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async{
+                        try{
+                          await context.read<AuthhProvider>().signInWithGoogle();
+                          if(context.mounted && context.read<AuthhProvider>().isLoggedIn){
+                            context.go("/main", extra:  "login");
+                          }
+                        }catch(e){
+                          if(context.mounted){
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                          }
+                        }
+                      },
                       child: Container(
                         color: MyColor.bg1,
                         width: 380.w,
@@ -290,7 +303,18 @@ class Desktop extends StatelessWidget {
                     SizedBox(height: 35.h),
                     //google signup
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async{
+                        try{
+                          await context.read<AuthhProvider>().signInWithGoogle();
+                          if(context.mounted && context.read<AuthhProvider>().isLoggedIn){
+                            context.go("/main", extra:  "login");
+                          }
+                        }catch(e){
+                          if(context.mounted){
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                          }
+                        }
+                      },
                       child: Container(
                         color: MyColor.bg1,
 
@@ -494,7 +518,18 @@ class Tablet extends StatelessWidget {
                         SizedBox(height: 12),
                         //google signup
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () async{
+                            try{
+                              await context.read<AuthhProvider>().signInWithGoogle();
+                              if(context.mounted && context.read<AuthhProvider>().isLoggedIn){
+                                context.go("/main", extra:  "login");
+                              }
+                            }catch(e){
+                              if(context.mounted){
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                              }
+                            }
+                          },
                           child: Container(
                             color: MyColor.bg1,
                             height: 50,

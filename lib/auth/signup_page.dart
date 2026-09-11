@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grocery_app/auth/responsive_layout.dart';
@@ -7,7 +8,9 @@ import 'package:grocery_app/utils/app_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
-import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
+import 'package:grocery_app/auth/auth_provider.dart';
+import 'package:grocery_app/auth/snack_bar.dart';
+
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -54,6 +57,7 @@ class _MobileState extends State<Mobile> {
   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Stack(
         children: [
@@ -307,19 +311,27 @@ class _MobileState extends State<Mobile> {
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                            await pref.setBool("LoginSuccess", true);
-                            context.read<UserProvider>().setUserData(
-                              name: nameController.text,
-                              email: emailController.text,
-                              contact: mobileController.text,
-                            );
-                            if(context.mounted){
-                              context.go("/main",extra: "signup");
+                            try {
+                              await context.read<AuthhProvider>().signup(
+                                  name: nameController.text.trim(),
+                                  contact: mobileController.text.trim(),
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim()
+                              );
+                              if (context.mounted) {
+                                context.go("/main", extra: "signup");
+                              }
+                              print("Signup successful");
+                            } catch (e) {
+                              if (context.mounted) {
+                                showTopSnackBar(
+                                  context,
+                                  message: e.toString().replaceAll("Exception: ", ""),
+                                  preIcon: Icons.error_outline,
+                                  backgroundColor: Colors.red,
+                                );
+                              }
                             }
-
-
                           }
                         },
                         child: Container(
@@ -657,19 +669,44 @@ class _TabletState extends State<Tablet> {
                         GestureDetector(
                           onTap: () async {
                             if (_formKey.currentState!.validate()) {
-                              SharedPreferences pref =
-                              await SharedPreferences.getInstance();
-                              await pref.setBool("LoginSuccess", true);
-                              context.read<UserProvider>().setUserData(
-                                name: nameController.text,
-                                email: emailController.text,
-                                contact: mobileController.text,
-                              );
-                              if(context.mounted){
-                                context.go("/main",extra: "signup");
+                              try {
+                                await context.read<AuthhProvider>().signup(
+                                    name: nameController.text.trim(),
+                                    contact: mobileController.text.trim(),
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim()
+                                );
+                                if (context.mounted) {
+                                  context.go("/main", extra: "signup");
+                                }
+                                print("Signup successful");
+                              } catch (e) {
+                                if (context.mounted) {
+                                  showTopSnackBar(
+                                    context,
+                                    message: e.toString().replaceAll("Exception: ", ""),
+                                    preIcon: Icons.error_outline,
+                                    backgroundColor: Colors.red,
+                                  );
+                                }
                               }
                             }
                           },
+                          // onTap: () async {
+                          //   if (_formKey.currentState!.validate()) {
+                          //     SharedPreferences pref =
+                          //     await SharedPreferences.getInstance();
+                          //     await pref.setBool("LoginSuccess", true);
+                          //     context.read<UserProvider>().setUserData(
+                          //       name: nameController.text,
+                          //       email: emailController.text,
+                          //       contact: mobileController.text,
+                          //     );
+                          //     if(context.mounted){
+                          //       context.go("/main",extra: "signup");
+                          //     }
+                          //   }
+                          // },
                           child: Container(
                             height: 50,
                             decoration: BoxDecoration(
@@ -1018,19 +1055,44 @@ class _DesktopState extends State<Desktop> {
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                            await pref.setBool("LoginSuccess", true);
-                            context.read<UserProvider>().setUserData(
-                              name: nameController.text,
-                              email: emailController.text,
-                              contact: mobileController.text,
-                            );
-                            if(context.mounted){
-                              context.go("/main",extra: "signup");
+                            try {
+                              await context.read<AuthhProvider>().signup(
+                                  name: nameController.text.trim(),
+                                  contact: mobileController.text.trim(),
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim()
+                              );
+                              if (context.mounted) {
+                                context.go("/main", extra: "signup");
+                              }
+                              print("Signup successful");
+                            } catch (e) {
+                              if (context.mounted) {
+                                showTopSnackBar(
+                                  context,
+                                  message: e.toString().replaceAll("Exception: ", ""),
+                                  preIcon: Icons.error_outline,
+                                  backgroundColor: Colors.red,
+                                );
+                              }
                             }
                           }
                         },
+                        // onTap: () async {
+                        //   if (_formKey.currentState!.validate()) {
+                        //     SharedPreferences pref =
+                        //     await SharedPreferences.getInstance();
+                        //     await pref.setBool("LoginSuccess", true);
+                        //     context.read<UserProvider>().setUserData(
+                        //       name: nameController.text,
+                        //       email: emailController.text,
+                        //       contact: mobileController.text,
+                        //     );
+                        //     if(context.mounted){
+                        //       context.go("/main",extra: "signup");
+                        //     }
+                        //   }
+                        // },
                         child: Container(
                           height: 50,
                           width: 500,

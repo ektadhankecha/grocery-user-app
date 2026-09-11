@@ -6,9 +6,9 @@ import 'package:grocery_app/auth/login_page.dart';
 import 'package:grocery_app/auth/otp_screen.dart';
 import 'package:grocery_app/auth/signup_page.dart';
 import 'package:grocery_app/auth/verify_number.dart';
-import 'package:grocery_app/data/dummy_data.dart';
 import 'package:grocery_app/model/category_model.dart';
 import 'package:grocery_app/model/product_model.dart';
+import 'package:grocery_app/auth/auth_provider.dart';
 import 'package:grocery_app/screen/cart_page/cart_screen.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/order_sucess_screen.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/payment_screen.dart';
@@ -37,7 +37,6 @@ import 'package:grocery_app/screen/profile_page/card/my_cards_screen.dart';
 import 'package:grocery_app/screen/profile_page/notification/notification_screen.dart';
 import 'package:grocery_app/screen/profile_page/order/order_screen.dart';
 import 'package:grocery_app/screen/profile_page/transaction/transaction_provider.dart';
-import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
 import 'package:grocery_app/screen/profile_page/transaction/transactions_screen.dart';
 import 'package:grocery_app/screen/splash/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -87,7 +86,8 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => TransactionProvider()..loadTransactions(),
         ),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+        //ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => AuthhProvider()..loadUserData()),
         ChangeNotifierProvider(create: (_) => OnboardingProvider(totalPage: 3)),
       ],
       child: MyApp(),

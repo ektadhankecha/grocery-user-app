@@ -180,6 +180,9 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
               GestureDetector(
                 onTap: canSelect
                     ? () {
+                  context.read<AddressProvider>().selectAddress(
+                    addressProvider.addresses[selectedIndex!],
+                  );
                         context.push("/payment");
                       }
                     : null,

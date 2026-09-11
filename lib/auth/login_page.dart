@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grocery_app/auth/responsive_layout.dart';
+import 'package:grocery_app/auth/auth_provider.dart';
+import 'package:grocery_app/auth/snack_bar.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -269,11 +272,25 @@ class _MobileState extends State<Mobile> {
                       GestureDetector(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                            await pref.setBool("LoginSuccess", true);
-                            if (context.mounted) {
-                              context.go("/main", extra: "login");
+                            try{
+                              await context.read<AuthhProvider>().signin(
+                                  emailController.text.trim(),
+                                  passwordController.text.trim()
+                              );
+                              print("Login");
+                              if (context.mounted) {
+                                context.go("/main", extra: "login");
+                              }
+
+                            } catch (e) {
+                              if (context.mounted) {
+                                showTopSnackBar(
+                                  context,
+                                  message: e.toString().replaceAll("Exception: ", ""),
+                                  preIcon: Icons.error_outline,
+                                  backgroundColor: Colors.red,
+                                );
+                              }
                             }
                           }
                         },
@@ -586,11 +603,25 @@ class _TabletState extends State<Tablet> {
                         GestureDetector(
                           onTap: () async {
                             if (_formKey.currentState!.validate()) {
-                              SharedPreferences pref =
-                                  await SharedPreferences.getInstance();
-                              await pref.setBool("LoginSuccess", true);
-                              if (context.mounted) {
-                                context.go("/main", extra: "login");
+                              try{
+                                await context.read<AuthhProvider>().signin(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim()
+                                );
+                                print("Login");
+                                if (context.mounted) {
+                                  context.go("/main", extra: "login");
+                                }
+
+                              } catch (e) {
+                                if (context.mounted) {
+                                  showTopSnackBar(
+                                    context,
+                                    message: e.toString().replaceAll("Exception: ", ""),
+                                    preIcon: Icons.error_outline,
+                                    backgroundColor: Colors.red,
+                                  );
+                                }
                               }
                             }
                           },
@@ -923,11 +954,25 @@ class _DesktopState extends State<Desktop> {
                     GestureDetector(
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          SharedPreferences pref =
-                              await SharedPreferences.getInstance();
-                          await pref.setBool("LoginSuccess", true);
-                          if (context.mounted) {
-                            context.go("/main", extra: "login");
+                          try{
+                            await context.read<AuthhProvider>().signin(
+                                emailController.text.trim(),
+                                passwordController.text.trim()
+                            );
+                            print("Login");
+                            if (context.mounted) {
+                              context.go("/main", extra: "login");
+                            }
+
+                          } catch (e) {
+                            if (context.mounted) {
+                              showTopSnackBar(
+                                context,
+                                message: e.toString().replaceAll("Exception: ", ""),
+                                preIcon: Icons.error_outline,
+                                backgroundColor: Colors.red,
+                              );
+                            }
                           }
                         }
                       },

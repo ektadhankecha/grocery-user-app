@@ -288,19 +288,19 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                       Positioned(
                                                         bottom: isWide
-                                                            ? -8
-                                                            : -8.h,
+                                                            ? -7
+                                                            : -7.h,
                                                         top: isWide
                                                             ? 16
                                                             : 16.h,
                                                         child: Image.network(
                                                           item.image,
                                                           width: isWide
-                                                            ? 85
-                                                            : 85.w,
+                                                            ? 50
+                                                            : 50.w,
                                                           height: isWide
-                                                            ? 80
-                                                            : 80.h,
+                                                            ? 45
+                                                            : 45.h,
                                                           fit: BoxFit.contain,
                                                         ),
                                                       ),

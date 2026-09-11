@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grocery_app/screen/profile_page/about_me/user_provider.dart';
+import 'package:grocery_app/auth/auth_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -101,12 +104,25 @@ class ProfilePage extends StatelessWidget {
                   color: MyColor.textGraey,
                   size: 20,
                 ),
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(sheetContext);
+                  try {
+                    final ImagePicker picker = ImagePicker();
+                    final XFile? image = await picker.pickImage(
+                      source: ImageSource.camera,
+                      imageQuality: 50,
+                    );
+                    if (image != null && context.mounted) {
+                      final Uint8List  bytes = await image.readAsBytes();
+                      await context.read<AuthhProvider>().updateProfileImage(bytes);
+                    }
+                  }catch(e){
+                    debugPrint("Image picker error: $e");
+                  }
 
-                  context.read<ProfileProvider>().pickProfileImage(
-                    ImageSource.camera,
-                  );
+                  // context.read<ProfileProvider>().pickProfileImage(
+                  //   ImageSource.camera,
+                  // );
                 },
               ),
 
@@ -149,12 +165,24 @@ class ProfilePage extends StatelessWidget {
                   color: MyColor.textGraey,
                   size: 20,
                 ),
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(sheetContext);
-
-                  context.read<ProfileProvider>().pickProfileImage(
-                    ImageSource.gallery,
-                  );
+                  try {
+                    final ImagePicker picker = ImagePicker();
+                    final XFile? image = await picker.pickImage(
+                      source: ImageSource.gallery,
+                      imageQuality: 50,
+                    );
+                    if (image != null && context.mounted) {
+                      final Uint8List  bytes = await image.readAsBytes();
+                      await context.read<AuthhProvider>().updateProfileImage(bytes);
+                    }
+                  }catch(e){
+                    debugPrint("Image Picker error: $e");
+                  }
+                  // context.read<ProfileProvider>().pickProfileImage(
+                  //   ImageSource.gallery,
+                  //  );
                 },
               ),
               SizedBox(height: 20),
@@ -167,7 +195,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = context.watch<UserProvider>();
+    // final userProvider = context.watch<UserProvider>();
+    final authProvider = context.watch<AuthhProvider>();
     final bool isWide = MediaQuery.of(context).size.width > 600;
 
     return PopScope(
@@ -183,7 +212,7 @@ class ProfilePage extends StatelessWidget {
             margin: isWide
                 ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
                 : EdgeInsets.zero,
-           // padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+            // padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
             decoration: isWide
                 ? BoxDecoration(
                     color: MyColor.bg1,
@@ -215,9 +244,15 @@ class ProfilePage extends StatelessWidget {
                           Consumer<ProfileProvider>(
                             builder: (context, provider, child) {
                               return CircleAvatar(
-                                backgroundImage: provider.profileImage != null
-                                    ? FileImage(provider.profileImage!)
-                                    : const AssetImage(
+                                backgroundImage:
+                                    authProvider.userImage != null &&
+                                        authProvider.userImage!.isNotEmpty
+                                    ? MemoryImage(
+                                        base64Decode(authProvider.userImage!),
+                                      )
+                                    :
+                                      //Icon(MyIcon.profileCircle,)
+                                      const AssetImage(
                                             "assets/images/profile.png",
                                           )
                                           as ImageProvider,
@@ -248,7 +283,7 @@ class ProfilePage extends StatelessWidget {
                       ),
 
                       Text(
-                        userProvider.name,
+                        authProvider.userName ?? '',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -256,7 +291,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        userProvider.email,
+                        authProvider.userEmail ?? '',
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
@@ -297,39 +332,31 @@ class ProfilePage extends StatelessWidget {
                         onTap: () async {
                           switch (profileData[index].id) {
                             case "logout":
-                              SharedPreferences pref =
-                                  await SharedPreferences.getInstance();
-                              await pref.setBool("LoginSuccess", false);
-                              context.go('/auth');
-
+                              await context.read<AuthhProvider>().logout();
+                              if (context.mounted) {
+                                context.go('/auth');
+                              }
                               break;
                             case "fav":
                               context.push("/favourite");
-
                               break;
                             case "about":
                               context.push("/aboutMe");
-
                               break;
                             case "add":
                               context.push("/myAddress");
-
                               break;
                             case "order":
                               context.push("/order");
-
                               break;
                             case "cards":
                               context.push("/myCard");
-
                               break;
                             case "transaction":
                               context.push("/transaction");
-
                               break;
                             case "notification":
                               context.push("/notification");
-
                               break;
                           }
                         },

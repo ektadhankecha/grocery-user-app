@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/model/order_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,6 +6,8 @@ import 'dart:convert';
 import 'dart:math';
 
 class OrderProvider extends ChangeNotifier {
+
+  final CollectionReference orderCollection = FirebaseFirestore.instance.collection("Orders");
   List<OrderModel> orderList = [];
   DateTime orderDate = DateTime(
     DateTime.now().year,
@@ -14,6 +17,8 @@ class OrderProvider extends ChangeNotifier {
 
   Future<void> addOrder(OrderModel order) async {
     orderList.insert(0, order);
+
+    await orderCollection.add(order.toJson());
     await saveOrders();
     notifyListeners();
   }

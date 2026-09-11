@@ -129,7 +129,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     CircleAvatar(
                                       radius: 33,
                                       backgroundColor: Color(item.bgColor),
-                                      child: Image.asset(
+                                      child: Image.network(
                                         item.productImage,
                                         width: 70,
                                         height: 70,
@@ -177,7 +177,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                       ),
                                     ),
                                     Text(
-                                      "Placed on ${DateFormat('MMMM dd yyyy').format(order.orderDate)}",
+                                      "Placed on ${order.orderDate}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 8,
