@@ -17,7 +17,7 @@ class MyCardsScreen extends StatefulWidget {
 }
 
 class _MyCardsScreenState extends State<MyCardsScreen> {
-  bool isExpanded = false;
+ // bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {

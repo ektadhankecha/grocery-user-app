@@ -18,8 +18,8 @@ class TransactionsModel {
 
   factory TransactionsModel.fromJson(Map<String, dynamic> json) {
     return TransactionsModel(
-      title: json['title'],
-      transactionDate: DateTime.parse(json['transactionDate']),
+      title: json['title'] ?? '',
+      transactionDate: json['transactionDate'] != null ? DateTime.parse(json['transactionDate']) : DateTime.now(),
       amount: json['amount'].toDouble(),
     );
   }

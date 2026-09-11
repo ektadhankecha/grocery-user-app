@@ -4,6 +4,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grocery_app/auth/auth_provider.dart';
+import 'package:grocery_app/screen/cart_page/orders_process/order_provider.dart';
+import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
+import 'package:grocery_app/screen/profile_page/address/address_provider.dart';
+import 'package:grocery_app/screen/profile_page/transaction/transaction_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,8 +15,8 @@ import 'package:grocery_app/data/profile_data.dart';
 import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:grocery_app/screen/profile_page/profile_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'card/card_provider.dart';
 
 class ProfilePage extends StatelessWidget {
   final VoidCallback? onBack;
@@ -241,25 +245,17 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          Consumer<ProfileProvider>(
-                            builder: (context, provider, child) {
-                              return CircleAvatar(
-                                backgroundImage:
-                                    authProvider.userImage != null &&
-                                        authProvider.userImage!.isNotEmpty
-                                    ? MemoryImage(
-                                        base64Decode(authProvider.userImage!),
-                                      )
-                                    :
-                                      //Icon(MyIcon.profileCircle,)
-                                      const AssetImage(
-                                            "assets/images/profile.png",
-                                          )
-                                          as ImageProvider,
-
-                                radius: 60,
-                              );
-                            },
+                          CircleAvatar(
+                            backgroundImage:
+                                authProvider.userImage != null &&
+                                    authProvider.userImage!.isNotEmpty
+                                ? MemoryImage(
+                                    base64Decode(authProvider.userImage!),
+                                  )
+                                : const AssetImage(
+                                      "assets/images/profile.png",
+                                    ) as ImageProvider,
+                            radius: 60,
                           ),
                           Positioned(
                             bottom: 0,
@@ -333,6 +329,13 @@ class ProfilePage extends StatelessWidget {
                           switch (profileData[index].id) {
                             case "logout":
                               await context.read<AuthhProvider>().logout();
+                              context.read<ProductProvider>().loadFavorite();
+                              context.read<ProductProvider>().loadCart();
+                              context.read<ProductProvider>().clearSearchHistory();
+                              context.read<OrderProvider>().clearOrders();
+                              context.read<AddressProvider>().clearAddresses();
+                              context.read<CardProvider>().clearCards();
+                              context.read<TransactionProvider>().clearTransactions();
                               if (context.mounted) {
                                 context.go('/auth');
                               }

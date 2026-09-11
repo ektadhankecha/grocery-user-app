@@ -3,11 +3,15 @@ import 'package:go_router/go_router.dart';
 import 'package:grocery_app/auth/responsive_layout.dart';
 import 'package:grocery_app/auth/auth_provider.dart';
 import 'package:grocery_app/auth/snack_bar.dart';
+import 'package:grocery_app/screen/cart_page/orders_process/order_provider.dart';
+import 'package:grocery_app/screen/home_page/featured_product/card/product_provider.dart';
+import 'package:grocery_app/screen/profile_page/address/address_provider.dart';
+import 'package:grocery_app/screen/profile_page/card/card_provider.dart';
+import 'package:grocery_app/screen/profile_page/transaction/transaction_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -281,7 +285,13 @@ class _MobileState extends State<Mobile> {
                               if (context.mounted) {
                                 context.go("/main", extra: "login");
                               }
-
+                              context.read<ProductProvider>().loadFavorite();
+                              context.read<ProductProvider>().loadCart();
+                              context.read<ProductProvider>().loadSearchHistory();
+                              context.read<OrderProvider>().loadOrders();
+                              context.read<AddressProvider>().loadAddresses();
+                              context.read<CardProvider>().loadCard();
+                              context.read<TransactionProvider>().loadTransactions();
                             } catch (e) {
                               if (context.mounted) {
                                 showTopSnackBar(
@@ -612,6 +622,13 @@ class _TabletState extends State<Tablet> {
                                 if (context.mounted) {
                                   context.go("/main", extra: "login");
                                 }
+                                context.read<ProductProvider>().loadFavorite();
+                                context.read<ProductProvider>().loadCart();
+                                context.read<ProductProvider>().loadSearchHistory();
+                                context.read<OrderProvider>().loadOrders();
+                                context.read<AddressProvider>().loadAddresses();
+                                context.read<CardProvider>().loadCard();
+                                context.read<TransactionProvider>().loadTransactions();
 
                               } catch (e) {
                                 if (context.mounted) {
@@ -963,6 +980,13 @@ class _DesktopState extends State<Desktop> {
                             if (context.mounted) {
                               context.go("/main", extra: "login");
                             }
+                            context.read<ProductProvider>().loadFavorite();
+                            context.read<ProductProvider>().loadCart();
+                            context.read<ProductProvider>().loadSearchHistory();
+                            context.read<OrderProvider>().loadOrders();
+                            context.read<AddressProvider>().loadAddresses();
+                            context.read<CardProvider>().loadCard();
+                            context.read<TransactionProvider>().loadTransactions();
 
                           } catch (e) {
                             if (context.mounted) {

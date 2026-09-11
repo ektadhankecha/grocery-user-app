@@ -68,6 +68,12 @@ class AuthhProvider extends ChangeNotifier {
             'profileImage' : user.photoURL ?? '',
             'createdAt' : signupDate,
             'onboardDate' : signupDate,
+            'favorites' : [],
+            'cart' : {},
+            'addresses' : [],
+            'cards' : [],
+            'transaction' : [],
+            'searchHistory' : []
           });
         }
         await loadUserData();
@@ -122,6 +128,12 @@ class AuthhProvider extends ChangeNotifier {
           'phone': contact,
           'createdAt': signupDate,
           'onboardDate': signupDate,
+          'favorites' : [],
+          'cart' : {},
+          'addresses' : [],
+          'cards' : [],
+          'transaction' : [],
+          'searchHistory' : []
         });
 
         userName = name;

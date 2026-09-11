@@ -43,7 +43,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:grocery_app/utils/app_colors.dart';
-import 'screen/profile_page/profile_provider.dart';
 import 'package:grocery_app/screen/cart_page/orders_process/order_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
@@ -66,14 +65,11 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) {
             final provider = ProductProvider() ..listenProducts();
-            provider.showData();
+            provider.loadCart();
             provider.loadFavorite();
             provider.loadSearchHistory();
             return provider;
           },
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ProfileProvider()..loadProfileImage(),
         ),
         ChangeNotifierProvider(create: (_) => CategoryProvider()..listenToCategories()),
         ChangeNotifierProvider(create: (_) => BottomNavigationProvider()),

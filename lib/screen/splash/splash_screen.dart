@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:grocery_app/auth/auth_page.dart';
 import 'package:grocery_app/auth/auth_provider.dart';
-import 'package:grocery_app/screen/main_page/main_screen.dart';
-import 'package:grocery_app/screen/on_boarding/onboarding_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';

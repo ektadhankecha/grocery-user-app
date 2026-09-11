@@ -88,436 +88,435 @@ class _AddressScreenState extends State<AddressScreen> {
         ),
         title: const Text("Add Address"),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            width: isWide ? 500 : double.infinity,
-            margin: isWide
-                ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
-                : EdgeInsets.zero,
-            padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
-            decoration: isWide
-                ? BoxDecoration(
-              color: MyColor.bg1,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(12),
-                  blurRadius: 16,
-                  spreadRadius: 2,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            )
-                : null,
-            child: Column(
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        controller: nameController,
-                        keyboardType: TextInputType.text,
-                        cursorColor: Colors.black,
-                        cursorHeight: 24,
-                        cursorWidth: 2,
-                        selectionControls: null,
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
-                          errorStyle: const TextStyle(fontSize: 0, height: 0),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          prefixIcon: Icon(
-                            MyIcon.profileCircle,
-                            size: 24,
-                            color: MyColor.lightGray,
-                          ),
-                          hintText: "Name",
-                        ),
-
-                        validator: ((value) {
-                          if (value == null || value.isEmpty) {
-                            return "";
-                          }
-                          return null;
-                        }),
+      body: Center(
+        child: Container(
+          width: isWide ? 500 : double.infinity,
+          margin: isWide
+              ? const EdgeInsets.symmetric(vertical: 24, horizontal: 16)
+              : EdgeInsets.zero,
+          padding: EdgeInsets.fromLTRB(17, 20, 17, isWide ? 20 : 25),
+          decoration: isWide
+              ? BoxDecoration(
+            color: MyColor.bg1,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(12),
+                blurRadius: 16,
+                spreadRadius: 2,
+                offset: Offset(0, 4),
+              ),
+            ],
+          )
+              : null,
+          child: Column(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
                       ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                      controller: nameController,
+                      keyboardType: TextInputType.text,
+                      cursorColor: Colors.black,
+                      cursorHeight: 24,
+                      cursorWidth: 2,
+                      selectionControls: null,
+                      enableInteractiveSelection: true,
+                      decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
+                        errorStyle: const TextStyle(fontSize: 0, height: 0),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
                         ),
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        cursorColor: Colors.black,
-                        cursorHeight: 24,
-                        cursorWidth: 2,
-                        selectionControls: null,
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
-                          errorStyle: const TextStyle(fontSize: 0, height: 0),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          prefixIcon: Icon(
-                            MyIcon.email,
-                            size: 24,
-                            color: MyColor.lightGray,
-                          ),
-                          hintText: "Email address",
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "";
-                          }
-                          if (!RegExp(
-                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                          ).hasMatch(value)) {
-                            return "Enter a valid email";
-                          }
-                          return null;
-                        },
+                        prefixIcon: Icon(
+                          MyIcon.profileCircle,
+                          size: 24,
+                          color: MyColor.lightGray,
+                        ),
+                        hintText: "Name",
                       ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        controller: phoneController,
-                        maxLength: 10,
 
-                        keyboardType: TextInputType.number,
-                        cursorColor: Colors.black,
-                        cursorHeight: 24,
-                        cursorWidth: 2,
-                        selectionControls: null,
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
-                          errorStyle: const TextStyle(fontSize: 0, height: 0),
-                          counterText: "",
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          prefixIcon: Icon(
-                            MyIcon.phone,
-                            size: 24,
-                            color: MyColor.lightGray,
-                          ),
-                          hintText: "Phone number",
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return "";
-                          }
-                          if (value.length != 10) {
-                            return "";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        controller: addressController,
-
-                        cursorColor: Colors.black,
-                        cursorHeight: 24,
-                        cursorWidth: 2,
-                        selectionControls: null,
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
-                          errorStyle: const TextStyle(fontSize: 0, height: 0),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          prefixIcon: Icon(
-                            MyIcon.location,
-                            size: 24,
-                            color: MyColor.lightGray,
-                          ),
-                          hintText: "Address",
-                        ),
-                        validator: ((value) {
-                          if (value == null || value.isEmpty) {
-                            return "";
-                          }
-                          return null;
-                        }),
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        controller: zipController,
-                        keyboardType: TextInputType.number,
-                        cursorColor: Colors.black,
-                        cursorHeight: 24,
-                        cursorWidth: 2,
-                        maxLength: 6,
-                        selectionControls: null,
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
-                          errorStyle: const TextStyle(fontSize: 0, height: 0),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          prefixIcon: Icon(
-                            MyIcon.pin,
-                            size: 24,
-                            color: MyColor.lightGray,
-                          ),
-                          hintText: "Zip code",
-                          counterText: "",
-                        ),
-                        validator: ((value) {
-                          if (value == null || value.isEmpty) {
-                            return "";
-                          }
-                          if (value.length != 6) {
-                            return "";
-                          }
-                          return null;
-                        }),
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        controller: cityController,
-                        keyboardType: TextInputType.text,
-                        cursorColor: Colors.black,
-                        cursorHeight: 24,
-                        cursorWidth: 2,
-                        selectionControls: null,
-                        enableInteractiveSelection: true,
-                        decoration: InputDecoration(
-                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
-                          errorStyle: const TextStyle(fontSize: 0, height: 0),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          prefixIcon: Icon(
-                            MyIcon.map,
-                            size: 24,
-                            color: MyColor.lightGray,
-                          ),
-                          hintText: "City",
-                        ),
-                        validator: ((value) {
-                          if (value == null || value.isEmpty) {
-                            return "";
-                          }
-                          return null;
-                        }),
-                      ),
-                      SizedBox(height: 5),
-                      DropdownButtonFormField<String>(
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: MyColor.textGraey,
-                        ),
-                        dropdownColor: MyColor.bg1,
-                        menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
-
-                        decoration: InputDecoration(
-                          fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
-                          errorStyle: const TextStyle(fontSize: 0, height: 0),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red, width: 2),
-                          ),
-
-                          hintText: "Country",
-
-                          prefixIcon: Icon(
-                            MyIcon.language,
-                            size: 24,
-                            color: MyColor.lightGray,
-                          ),
-                        ),
-                        icon: Icon(MyIcon.arrowDropDownOutlined),
-                        iconSize: 30,
-                        iconDisabledColor: MyColor.lightGray,
-                        iconEnabledColor: MyColor.lightGray,
-                        initialValue: selectedCountry,
-                        items: countries.map((country) {
-                          return DropdownMenuItem<String>(
-                            value: country,
-                            child: Text(
-                              country,
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectedCountry = value;
-                          });
-                          checkFields();
-                        },
-
-                        validator: ((value) {
-                          if (value == null || value.isEmpty) {
-                            return "";
-                          }
-                          return null;
-                        }),
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        children: [
-                          //remember me
-                          Transform.scale(
-                            scale: 0.6,
-                            child: Switch(
-                              value: saveThis,
-                              onChanged: (value) {
-                                setState(() {
-                                  saveThis = value;
-                                });
-                              },
-                              activeThumbColor: MyColor.bg1,
-                              activeTrackColor: MyColor.animationGreen,
-                              inactiveTrackColor: MyColor.bg3,
-                              inactiveThumbColor: MyColor.animationGreen,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                            ),
-                          ),
-                          //  SizedBox(width: 1,),
-                          Text(
-                            "Save this address",
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 140.h),
-                GestureDetector(
-                  onTap: isButtonEnabled
-                      ? () async {
-                          if (_formKey.currentState!.validate()) {
-                            final AddressModel newAddress = AddressModel(
-                              name: nameController.text,
-                              email: emailController.text,
-                              phone: phoneController.text,
-                              address: addressController.text,
-                              zipCode: zipController.text,
-                              city: cityController.text,
-                              country: selectedCountry ?? "",
-                            );
-                            await context.read<AddressProvider>().addAddresses(
-                              newAddress,
-                            );
-                            context.pop();
-                            //Navigator.pop(context);
-                          } else {
-                            showTopSnackBar(
-                              context,
-                              message: "Please fill all fields correct",
-                              preIcon: MyIcon.error,
-                              backgroundColor: MyColor.dltRed,
-                            );
-                          }
+                      validator: ((value) {
+                        if (value == null || value.isEmpty) {
+                          return "";
                         }
-                      : null,
-                  child: Container(
-                    height: 60.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.r),
-                      gradient: isButtonEnabled
-                          ? LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                MyColor.gradientGreen,
-                                MyColor.animationGreen,
-                              ],
-                            )
-                          : LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                Colors.grey.shade400,
-                                Colors.grey.shade500,
-                              ],
+                        return null;
+                      }),
+                    ),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      cursorColor: Colors.black,
+                      cursorHeight: 24,
+                      cursorWidth: 2,
+                      selectionControls: null,
+                      enableInteractiveSelection: true,
+                      decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
+                        errorStyle: const TextStyle(fontSize: 0, height: 0),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        prefixIcon: Icon(
+                          MyIcon.email,
+                          size: 24,
+                          color: MyColor.lightGray,
+                        ),
+                        hintText: "Email address",
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "";
+                        }
+                        if (!RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                        ).hasMatch(value)) {
+                          return "Enter a valid email";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      controller: phoneController,
+                      maxLength: 10,
+
+                      keyboardType: TextInputType.number,
+                      cursorColor: Colors.black,
+                      cursorHeight: 24,
+                      cursorWidth: 2,
+                      selectionControls: null,
+                      enableInteractiveSelection: true,
+                      decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
+                        errorStyle: const TextStyle(fontSize: 0, height: 0),
+                        counterText: "",
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        prefixIcon: Icon(
+                          MyIcon.phone,
+                          size: 24,
+                          color: MyColor.lightGray,
+                        ),
+                        hintText: "Phone number",
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "";
+                        }
+                        if (value.length != 10) {
+                          return "";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      controller: addressController,
+
+                      cursorColor: Colors.black,
+                      cursorHeight: 24,
+                      cursorWidth: 2,
+                      selectionControls: null,
+                      enableInteractiveSelection: true,
+                      decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
+                        errorStyle: const TextStyle(fontSize: 0, height: 0),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        prefixIcon: Icon(
+                          MyIcon.location,
+                          size: 24,
+                          color: MyColor.lightGray,
+                        ),
+                        hintText: "Address",
+                      ),
+                      validator: ((value) {
+                        if (value == null || value.isEmpty) {
+                          return "";
+                        }
+                        return null;
+                      }),
+                    ),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      controller: zipController,
+                      keyboardType: TextInputType.number,
+                      cursorColor: Colors.black,
+                      cursorHeight: 24,
+                      cursorWidth: 2,
+                      maxLength: 6,
+                      selectionControls: null,
+                      enableInteractiveSelection: true,
+                      decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
+                        errorStyle: const TextStyle(fontSize: 0, height: 0),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        prefixIcon: Icon(
+                          MyIcon.pin,
+                          size: 24,
+                          color: MyColor.lightGray,
+                        ),
+                        hintText: "Zip code",
+                        counterText: "",
+                      ),
+                      validator: ((value) {
+                        if (value == null || value.isEmpty) {
+                          return "";
+                        }
+                        if (value.length != 6) {
+                          return "";
+                        }
+                        return null;
+                      }),
+                    ),
+                    SizedBox(height: 5),
+                    TextFormField(
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      controller: cityController,
+                      keyboardType: TextInputType.text,
+                      cursorColor: Colors.black,
+                      cursorHeight: 24,
+                      cursorWidth: 2,
+                      selectionControls: null,
+                      enableInteractiveSelection: true,
+                      decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
+                        errorStyle: const TextStyle(fontSize: 0, height: 0),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        prefixIcon: Icon(
+                          MyIcon.map,
+                          size: 24,
+                          color: MyColor.lightGray,
+                        ),
+                        hintText: "City",
+                      ),
+                      validator: ((value) {
+                        if (value == null || value.isEmpty) {
+                          return "";
+                        }
+                        return null;
+                      }),
+                    ),
+                    SizedBox(height: 5),
+                    DropdownButtonFormField<String>(
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: MyColor.textGraey,
+                      ),
+                      dropdownColor: MyColor.bg1,
+                      menuMaxHeight: MediaQuery.of(context).size.height * 0.4,
+
+                      decoration: InputDecoration(
+                        fillColor: isWide ? MyColor.bg3 : MyColor.bg1,
+                        errorStyle: const TextStyle(fontSize: 0, height: 0),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+
+                        hintText: "Country",
+
+                        prefixIcon: Icon(
+                          MyIcon.language,
+                          size: 24,
+                          color: MyColor.lightGray,
+                        ),
+                      ),
+                      icon: Icon(MyIcon.arrowDropDownOutlined),
+                      iconSize: 30,
+                      iconDisabledColor: MyColor.lightGray,
+                      iconEnabledColor: MyColor.lightGray,
+                      initialValue: selectedCountry,
+                      items: countries.map((country) {
+                        return DropdownMenuItem<String>(
+                          value: country,
+                          child: Text(
+                            country,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
                             ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: isButtonEnabled
-                              ? MyColor.animationGreen.withAlpha(40)
-                              : Colors.grey.withAlpha(40),
-                          blurRadius: 9,
-                          spreadRadius: 0,
-                          offset: Offset(0, 10),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCountry = value;
+                        });
+                        checkFields();
+                      },
+
+                      validator: ((value) {
+                        if (value == null || value.isEmpty) {
+                          return "";
+                        }
+                        return null;
+                      }),
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        //remember me
+                        Transform.scale(
+                          scale: 0.6,
+                          child: Switch(
+                            value: saveThis,
+                            onChanged: (value) {
+                              setState(() {
+                                saveThis = value;
+                              });
+                            },
+                            activeThumbColor: MyColor.bg1,
+                            activeTrackColor: MyColor.animationGreen,
+                            inactiveTrackColor: MyColor.bg3,
+                            inactiveThumbColor: MyColor.animationGreen,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                          ),
+                        ),
+                        //  SizedBox(width: 1,),
+                        Text(
+                          "Save this address",
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
-                    child: Center(
-                      child: Text(
-                        "Save Address",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: isButtonEnabled ? MyColor.bg1 : Colors.white70,
-                        ),
+                  ],
+                ),
+              ),
+             Spacer(),
+
+           //  SizedBox(height: 140.h),
+              GestureDetector(
+                onTap: isButtonEnabled
+                    ? () async {
+                        if (_formKey.currentState!.validate()) {
+                          final AddressModel newAddress = AddressModel(
+                            name: nameController.text,
+                            email: emailController.text,
+                            phone: phoneController.text,
+                            address: addressController.text,
+                            zipCode: zipController.text,
+                            city: cityController.text,
+                            country: selectedCountry ?? "",
+                          );
+                          await context.read<AddressProvider>().addAddresses(
+                            newAddress,
+                          );
+                          context.pop();
+                          //Navigator.pop(context);
+                        } else {
+                          showTopSnackBar(
+                            context,
+                            message: "Please fill all fields correct",
+                            preIcon: MyIcon.error,
+                            backgroundColor: MyColor.dltRed,
+                          );
+                        }
+                      }
+                    : null,
+                child: Container(
+                  height: 60.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.r),
+                    gradient: isButtonEnabled
+                        ? LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              MyColor.gradientGreen,
+                              MyColor.animationGreen,
+                            ],
+                          )
+                        : LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Colors.grey.shade400,
+                              Colors.grey.shade500,
+                            ],
+                          ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isButtonEnabled
+                            ? MyColor.animationGreen.withAlpha(40)
+                            : Colors.grey.withAlpha(40),
+                        blurRadius: 9,
+                        spreadRadius: 0,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Save Address",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: isButtonEnabled ? MyColor.bg1 : Colors.white70,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -1,8 +1,8 @@
-import 'dart:convert';
-
+ import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:grocery_app/model/transactions_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TransactionProvider extends ChangeNotifier {
   List<TransactionsModel> transactionList = [];
@@ -15,27 +15,50 @@ class TransactionProvider extends ChangeNotifier {
   );
   Future<void> addTransaction(TransactionsModel transaction) async {
     transactionList.insert(0, transaction);
-    await saveTransactions();
     notifyListeners();
+    await saveTransactions();
+
   }
 
   Future<void> saveTransactions() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    List<String> transaction = transactionList
-        .map((transaction) => jsonEncode(transaction.toJson()))
-        .toList();
-    await pref.setStringList("TransactionList", transaction);
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null) return;
+
+    try{
+      final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      await docRef.update({
+        'transaction' : transactionList.map((transactionList) => transactionList.toJson()).toList(),
+
+      });
+    }catch(e){
+      debugPrint("Error saving transaction on FireStore: $e");
+    }
   }
 
   Future<void> loadTransactions() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    List<String> transactions = pref.getStringList("TransactionList") ?? [];
-    transactionList = transactions
-        .map(
-          (transactions) =>
-              TransactionsModel.fromJson(jsonDecode(transactions)),
-        )
-        .toList();
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null){
+      transactionList.clear();
+      notifyListeners();
+      return;
+    }
+    try{
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if(doc.exists && doc.data() != null){
+        final List<dynamic> transaction = doc.data()?['transaction'] ?? [];
+        transactionList.clear();
+        for(var item in transaction){
+          transactionList.add(TransactionsModel.fromJson(Map<String, dynamic>.from(item)));
+        }
+        notifyListeners();
+      }
+    }catch(e){
+      debugPrint("Error loading transaction from firebase: $e");
+    }
+  }
+
+  void clearTransactions(){
+    transactionList.clear();
     notifyListeners();
   }
 }

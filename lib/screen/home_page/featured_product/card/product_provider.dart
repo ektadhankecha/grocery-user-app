@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/model/product_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProductProvider extends ChangeNotifier {
   List<ProductModel> searchResults = [];
@@ -33,6 +32,7 @@ class ProductProvider extends ChangeNotifier {
           }
           productList = snapshot.docs
               .map((doc) => ProductModel.fromMap(doc.data(),doc.id)).toList();
+          loadFavorite();
           print("Successfully mapped ${productList.length} products to list!");
           notifyListeners();
     },
@@ -44,15 +44,37 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<void> loadSearchHistory() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    searchHistory = pref.getStringList('search_history') ?? [];
-    notifyListeners();
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null ){
+      searchHistory.clear();
+      notifyListeners();
+      return;
+    }
+    try {
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists && doc.data() != null) {
+        final List<dynamic> history = doc.data()?['searchHistory'] ?? [];
+        searchHistory = history.map((e) => e.toString()).toList();
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("Error loading search history from Firestore: $e");
+    }
   }
 
   Future<void> saveSearchHistory() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.setStringList('search_history', searchHistory);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    try {
+      final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      await docRef.update({
+        'searchHistory': searchHistory,
+      });
+    } catch (e) {
+      debugPrint("Error saving search history to Firestore: $e");
+    }
   }
+
 
   void addSearchKeyword(String query) {
     final trimmed = query.trim();
@@ -64,51 +86,95 @@ class ProductProvider extends ChangeNotifier {
     if (searchHistory.length > 10) {
       searchHistory.removeLast();
     }
-    saveSearchHistory();
     notifyListeners();
+    saveSearchHistory();
+
   }
 
   Future<void> clearSearchHistory() async {
     searchHistory.clear();
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.remove('search_history');
     notifyListeners();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+          'searchHistory': [],
+        });
+      } catch (e) {
+        debugPrint("Error clearing search history on Firestore: $e");
+      }
+    }
   }
 
 
+  Future<void> toggleFavorite(ProductModel product) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
-  void toggleFavorite(ProductModel product) {
     product.isFavorite = !product.isFavorite;
-    saveFavorite();
     notifyListeners();
+
+    try {
+      final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      if (product.isFavorite) {
+        // Add to array
+        await docRef.update({
+          'favorites': FieldValue.arrayUnion([product.id.toString()])
+        });
+      } else {
+        // Remove from array
+        await docRef.update({
+          'favorites': FieldValue.arrayRemove([product.id.toString()])
+        });
+      }
+    } catch (e) {
+      debugPrint("Error updating favorite: $e");
+    }
   }
 
-  void saveFavorite() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    List<String> favoriteProduct = productList
-        .where((product) => product.isFavorite)
-        .map((product) => product.id.toString())
-        .toList();
-    await pref.setStringList("FavList", favoriteProduct);
-  }
-
-  void loadFavorite() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    List<String> favoriteProduct = pref.getStringList('FavList') ?? [];
-
-    for (var product in productList) {
-      product.isFavorite = favoriteProduct.contains(product.id.toString());
+  Future<void> loadFavorite() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // If no user is logged in, mark all as false
+      for (var product in productList) {
+        product.isFavorite = false;
+      }
+      notifyListeners();
+      return;
     }
 
-    notifyListeners();
+    try {
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists && doc.data() != null) {
+        final List<dynamic> favList = doc.data()?['favorites'] ?? [];
+        for (var product in productList) {
+          product.isFavorite = favList.contains(product.id.toString());
+        }
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("Error loading favorites: $e");
+    }
   }
+
+
+
+
+
   void clearCart() async{
     cartItems.clear();
     cartQuantities.clear();
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.remove("CardData");
-    await pref.remove("CartQuantities");
     notifyListeners();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
+          'cart': {},
+        });
+      } catch (e) {
+        debugPrint("Error clearing cart: $e");
+      }
+    }
   }
 
   void searchProducts(String query) {
@@ -138,29 +204,66 @@ class ProductProvider extends ChangeNotifier {
 
 
   Future<void> saveCart() async {
-    String cardData = jsonEncode(
-      cartQuantities.map((key, value) => MapEntry(key.toString(), value)),
-    );
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.setString("CardData", cardData);
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null) return;
+    try{
+      final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      await docRef.update({
+        'cart' : cartQuantities,
+      });
+    }catch(e){
+      debugPrint("Error saving cart to Firebase: $e");
+    }
   }
 
-  Future<void> showData() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String? cardData = pref.getString("CardData");
-    if (cardData != null) {
-      Map<String, dynamic> data = jsonDecode(cardData);
-      cartQuantities = data.map(
-        (key, value) => MapEntry(key, value as int),
-      );
-      for (var product in productList) {
-        if (cartQuantities.containsKey(product.id)) {
-          cartItems.add(product);
-        }
-      }
+  Future<void> loadCart() async{
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null){
+      cartItems.clear();
+      cartQuantities.clear();
+      notifyListeners();
+      return;
     }
-    notifyListeners();
+
+    try{
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if(doc.exists && doc.data() != null){
+        final Map<String, dynamic> rawCart = doc.data()? ['cart'] ?? {};
+        cartQuantities = rawCart.map(
+              (key, value) => MapEntry(key, (value as num).toInt()),
+        );
+        cartItems.clear();
+        for (var product in productList) {
+          if (cartQuantities.containsKey(product.id.toString())) {
+            cartItems.add(product);
+          }
+        }
+        notifyListeners();
+
+      }
+
+    }catch(e){
+      debugPrint("Error loading cart from Firebase: $e");
+    }
   }
+
+
+  // Future<void> showData() async {
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   String? cardData = pref.getString("CardData");
+  //   if (cardData != null) {
+  //     Map<String, dynamic> data = jsonDecode(cardData);
+  //     cartQuantities = data.map(
+  //       (key, value) => MapEntry(key, value as int),
+  //     );
+  //     for (var product in productList) {
+  //       if (cartQuantities.containsKey(product.id)) {
+  //         cartItems.add(product);
+  //       }
+  //     }
+  //   }
+  //   notifyListeners();
+  // }
 
   int get cartBadgeCount {
     return cartQuantities.values.fold(0, (sum, qty) => sum + qty);

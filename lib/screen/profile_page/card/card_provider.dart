@@ -1,45 +1,56 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:grocery_app/model/card_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class CardProvider extends ChangeNotifier {
   final List<CardModel> cards = [];
 
   Future<void> addCard(CardModel card) async {
     cards.add(card);
-    await saveCard();
     notifyListeners();
+    await saveCard();
   }
 
   Future<void> saveCard() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    List<String> cardList = cards.map((card) {
-      return jsonEncode({
-        "name": card.name,
-        "cardNumber": card.cardNumber,
-        "date": card.date,
-        "cvv": card.cvv,
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    try {
+      final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      await docRef.update({
+        'cards': cards.map((card) => card.toJson()).toList(),
       });
-    }).toList();
-    await pref.setStringList("CardList", cardList);
+    } catch (e) {
+      debugPrint("Error saving card to Firestore: $e");
+    }
   }
 
   Future<void> loadCard() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    List<String> cardList = pref.getStringList("CardList") ?? [];
-    cards.clear();
-    for (String cardData in cardList) {
-      Map<String, dynamic> data = jsonDecode(cardData);
-      cards.add(
-        CardModel(
-          name: data["name"],
-          cardNumber: data["cardNumber"],
-          date: data["date"],
-          cvv: data["cvv"],
-        ),
-      );
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      cards.clear();
+      notifyListeners();
+      return;
     }
+
+    try {
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists && doc.data() != null) {
+        final List<dynamic> cardList = doc.data()?['cards'] ?? [];
+        cards.clear();
+        for (var item in cardList) {
+          cards.add(CardModel.fromJson(Map<String, dynamic>.from(item)));
+        }
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("Error loading cards from Firestore: $e");
+    }
+  }
+
+  void clearCards() {
+    cards.clear();
     notifyListeners();
   }
 }

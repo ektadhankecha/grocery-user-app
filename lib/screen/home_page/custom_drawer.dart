@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/auth/auth_provider.dart';
 import 'package:grocery_app/screen/main_page/bottom_navigation/bottom_navigation_provider.dart';
-import 'package:grocery_app/screen/profile_page/profile_provider.dart';
 import 'package:grocery_app/utils/app_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:grocery_app/utils/app_colors.dart';
@@ -41,7 +40,7 @@ class CustomDrawer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 20.h),
-                    Consumer<ProfileProvider>(
+                    Consumer<AuthhProvider>(
                       builder: (context, provider, child) {
                         return CircleAvatar(
                           radius: 40.r,
