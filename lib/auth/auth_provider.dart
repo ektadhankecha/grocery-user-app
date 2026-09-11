@@ -11,6 +11,7 @@ import 'dart:typed_data';
 class AuthhProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   User? get currentUser => _auth.currentUser;
   bool get isLoggedIn => _auth.currentUser != null;
   String? userName;
@@ -37,8 +38,8 @@ class AuthhProvider extends ChangeNotifier {
         userCredential = await _auth.signInWithPopup(googleProvider);
 
       }else {
-        final GoogleSignIn googleSignIn = GoogleSignIn();
-        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+       // final GoogleSignIn googleSignIn = GoogleSignIn();
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
         if(googleUser == null){
           return;
@@ -75,7 +76,7 @@ class AuthhProvider extends ChangeNotifier {
     } on FirebaseAuthException catch (e){
      throw Exception(_getFriendlyErrorMessage(e.code));
     }catch(e){
-      debugPrint("Google Sign-in Error: $e");
+    //  debugPrint("Google Sign-in Error: $e");
       throw Exception("Failed to signIn with google. Please try again");
     }
   }
@@ -219,10 +220,20 @@ class AuthhProvider extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    if (!kIsWeb) {
-      await GoogleSignIn().signOut();
+    try {
+      if (!kIsWeb) {
+        await _googleSignIn.signOut();
+      }
+    }catch(e){
+      debugPrint("Google Sign Out Error: $e");
     }
-    await _auth.signOut();
+
+    try{
+      await _auth.signOut();
+    }catch(e){
+      debugPrint("Firebase Signout Error: $e");
+    }
+
     userName = null;
     userEmail = null;
     userPhone = null;
