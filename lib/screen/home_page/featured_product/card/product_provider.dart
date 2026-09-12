@@ -47,7 +47,7 @@ class ProductProvider extends ChangeNotifier {
   void _syncCartItems() {
     cartItems.clear();
     for (var product in productList) {
-      if (cartQuantities.containsKey(product.id.toString())) {
+      if (cartQuantities.containsKey(product.productId)) {
         cartItems.add(product);
       }
     }
@@ -129,12 +129,12 @@ class ProductProvider extends ChangeNotifier {
       if (product.isFavorite) {
         // Add to array
         await docRef.update({
-          'favorites': FieldValue.arrayUnion([product.id.toString()])
+          'favorites': FieldValue.arrayUnion([product.productId])
         });
       } else {
         // Remove from array
         await docRef.update({
-          'favorites': FieldValue.arrayRemove([product.id.toString()])
+          'favorites': FieldValue.arrayRemove([product.productId])
         });
       }
     } catch (e) {
@@ -158,7 +158,7 @@ class ProductProvider extends ChangeNotifier {
       if (doc.exists && doc.data() != null) {
         final List<dynamic> favList = doc.data()?['favorites'] ?? [];
         for (var product in productList) {
-          product.isFavorite = favList.contains(product.id.toString());
+          product.isFavorite = favList.contains(product.productId);
         }
         notifyListeners();
       }
@@ -199,10 +199,10 @@ class ProductProvider extends ChangeNotifier {
   }
 
   void addToCart(ProductModel product, int quantity) {
-    if (cartItems.contains(product)) {
-      cartItems.insert(0, product);
+    if (!cartItems.any((item)=> item.productId == product.productId)) {
+      cartItems.add(product);
     }
-    final key = product.id.toString();
+    final key = product.productId;
     cartQuantities[key] = (cartQuantities[key] ?? 0) + quantity;
     saveCart();
     notifyListeners();
@@ -240,7 +240,7 @@ class ProductProvider extends ChangeNotifier {
         );
         cartItems.clear();
         for (var product in productList) {
-          if (cartQuantities.containsKey(product.id.toString())) {
+          if (cartQuantities.containsKey(product.productId)) {
             cartItems.add(product);
           }
         }
@@ -257,7 +257,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
   void increaseQuantity(ProductModel product) {
-    final key = product.id.toString();
+    final key = product.productId;
     cartQuantities[key] = (cartQuantities[key] ?? 1) + 1;
    // cartItems.remove(product);
    // cartItems.insert(0, product);
@@ -266,7 +266,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
   void decreaseQuantity(ProductModel product) {
-    final key = product.id.toString();
+    final key = product.productId;
     final currentQty = cartQuantities[key] ?? 1;
 
     if (currentQty > 1) {
@@ -281,7 +281,7 @@ class ProductProvider extends ChangeNotifier {
 
   void productRemove(ProductModel product) {
     cartItems.remove(product);
-    cartQuantities.remove(product.id.toString());
+    cartQuantities.remove(product.productId);
     saveCart();
     notifyListeners();
   }
@@ -289,7 +289,7 @@ class ProductProvider extends ChangeNotifier {
   double get subTotal {
     double total = 0.0;
     for (var product in cartItems) {
-      int qty = cartQuantities[product.id.toString()] ?? 1;
+      int qty = cartQuantities[product.productId] ?? 1;
       total += product.price * qty;
     }
     return total;

@@ -378,7 +378,7 @@ class _CartPageState extends State<CartPage> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    "${productProvider.cartQuantities[item.id] ?? 1}",
+                                                    "${productProvider.cartQuantities[item.productId] ?? 1}",
                                                     style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.w500,

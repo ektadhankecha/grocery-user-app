@@ -78,7 +78,7 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => AddressProvider()..loadAddresses(),
         ),
-        ChangeNotifierProvider(create: (_) => OrderProvider()..loadOrders()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()..listenToOrders()),
         ChangeNotifierProvider(
           create: (_) => TransactionProvider()..loadTransactions(),
         ),

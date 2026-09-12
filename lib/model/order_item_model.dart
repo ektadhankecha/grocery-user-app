@@ -1,4 +1,5 @@
 class OrderItemModel{
+
   final String productId;
   final String productName;
   final String productImage;
@@ -7,6 +8,7 @@ class OrderItemModel{
   final int quantity;
 
   OrderItemModel({
+
     required this.productId,
     required this.productName,
     required this.productImage,
@@ -17,6 +19,7 @@ class OrderItemModel{
 
   Map<String , dynamic> toJson(){
     return {
+
       'productId' : productId,
       'productName' :productName,
       'productImage' : productImage,
@@ -28,6 +31,7 @@ class OrderItemModel{
 
   factory OrderItemModel.fromJson(Map<String, dynamic>json){
     return OrderItemModel(
+
         productId: json['productId'],
         productName: json['productName'],
         productImage : json['productImage'],

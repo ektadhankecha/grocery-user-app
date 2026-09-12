@@ -440,7 +440,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     final bool isWide = screenWidth > 800;
     final productProvider = context.watch<ProductProvider>();
-    final cartQuantity = productProvider.cartQuantities[widget.product.id] ?? 0;
+    final cartQuantity = productProvider.cartQuantities[widget.product.productId] ?? 0;
     final displayQuantity = cartQuantity > 0 ? cartQuantity : quantity;
 
     return Scaffold(

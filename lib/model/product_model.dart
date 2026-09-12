@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ProductModel {
   final String id;
+  final String productId;
   final String image;
   final String name;
   final String quantity;
@@ -15,6 +16,7 @@ class ProductModel {
 
   ProductModel({
     required this.id,
+    required this.productId,
     required this.image,
     required this.name,
     required this.quantity,
@@ -29,6 +31,7 @@ class ProductModel {
   factory ProductModel.fromMap(Map<String, dynamic> map, String docId) {
     return ProductModel(
       id: docId,
+      productId: map['productId']?.toString() ?? '',
       image: map['image']?.toString() ?? '',
       name: map['name']?.toString() ?? '',
       quantity: map['quantity']?.toString() ?? '',
